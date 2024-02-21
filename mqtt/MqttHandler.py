@@ -6,6 +6,9 @@ from mqtt.MqttConfig import MqttConfig
 class MqttClient:
 
     def __init__(self, config: MqttConfig):
+
+        self.topic = config.topic
+
         self.__retainedMessages = []
 
         self.client = paho.Client(client_id=config.client_id, userdata=None, protocol=paho.MQTTv5)
@@ -19,7 +22,7 @@ class MqttClient:
         self.client.on_message = self.on_message
         self.client.on_publish = self.on_publish
 
-        self.client.subscribe(config.topic, qos=config.qos)
+        self.client.subscribe(self.topic, qos=config.qos)
 
     def on_connect(self, client, userdata, flags, rc, properties=None):
         print("Connection received with code %s." % rc)
@@ -34,8 +37,8 @@ class MqttClient:
         self.__retainedMessages.append(msg.payload)
         print(msg.topic + " - " + str(msg.payload))
 
-    def publish_message(self, topic, payload, retain=False, qos=1):
-        self.client.publish("todos", payload=payload, qos=qos, retain=retain)
+    def publish_message(self, message, retain=False, qos=1):
+        self.client.publish(self.topic, payload=message, qos=qos, retain=retain)
 
     def start_loop(self):
         self.client.loop_start()
