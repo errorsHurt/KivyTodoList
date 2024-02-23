@@ -5,7 +5,8 @@ from kivy.properties import StringProperty, BooleanProperty
 from kivy.uix.recycleview import RecycleView
 from kivy.clock import Clock
 
-Builder.load_file('layout.kv')
+
+Builder.load_file('resources/layout.kv')
 
 class ToDoListItem(BoxLayout):
     text = StringProperty('')
@@ -74,6 +75,7 @@ class MainToDoList(BoxLayout):
     def edit_item(self, item_widget):
         self.selected_item = item_widget
         self.ids.global_edit_text.text = item_widget.text
+        print('self.ids.global_edit_text.text  ->  '+str(self.ids.global_edit_text.text))
         self.ids.global_edit_text.disabled = False
         self.ids.global_edit_text.opacity = 1
         self.ids.global_edit_text.focus = True
@@ -82,12 +84,16 @@ class MainToDoList(BoxLayout):
         if self.selected_item:
             new_text = self.ids.global_edit_text.text
             # Update the selected item text and refresh the RecycleView
+            print('self.selected_item.text  ->  '+str(self.selected_item.text))
             for item in self.ids.rv.data:
                 if item['text'] == self.selected_item.text:
                     item['text'] = new_text
+                    print("item['text']  -> "+str(item['text']))
                     break
             self.ids.rv.refresh_from_data()
-            
+            # Checke input der safe.json -> Wenn status = checked dann checke und wenn nicht dann unchecke
+            # For element in safe.json:
+
             # Clear and hide the global TextInput
             self.ids.global_edit_text.text = ''
             self.ids.global_edit_text.opacity = 0

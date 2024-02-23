@@ -46,6 +46,7 @@
         spacing: 10
         padding: 10
         
+
     RecycleView:
         id: rv
         viewclass: 'ToDoListItem'
@@ -60,34 +61,18 @@
         size_hint_y: 0.1
         orientation: 'horizontal'
         
-        Button:
-            text: '☰'
-            size_hint: None, None
-            size: dp(60), dp(60)
-            pos_hint: {'center_x': 0.5, 'center_y': -0.5}
-            on_release: # Hier kannst du definieren, was passiert, wenn der Button gedrückt wird
-            opacity: 1
-            disabled: False
-        
-        TextInput:
-            id: global_edit_text
-            size_hint_y: 0.1
-            multiline: False
-            opacity: 0
-            disabled: True
-            on_text_validate: root.apply_global_edit()
+        Widget:
+            # This widget acts as a spacer, pushing the button to the right
+            size_hint_x: 1
 
         Button:
             text: '+'
             size_hint: None, None
             size: dp(60), dp(60)
-            pos_hint: {'center_x': 0.5, 'center_y': -0.5}
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
             on_release: root.add_item()
             opacity: 1
             disabled: False
-        
-
-            
 
     TextInput:
         id: global_edit_text
@@ -96,4 +81,3 @@
         opacity: 0
         disabled: True
         on_text_validate: root.apply_global_edit()
-
