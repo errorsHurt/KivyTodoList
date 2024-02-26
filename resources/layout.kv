@@ -1,0 +1,77 @@
+#:import NoTransition kivy.uix.screenmanager.NoTransition
+
+MDFloatLayout:
+    md_bg_color: 1, 1, 1, 1
+    ScreenManager:
+        id: scr
+        transition: NoTransition()
+        MDScreen:
+            name: "home"
+            MDLabel:
+                text: "Home"
+                pos_hint: {"center_y": .5}
+                halign: "center"
+        MDScreen:
+            name: "search"
+            MDLabel:
+                text: "Search"
+                pos_hint: {"center_y": .5}
+                halign: "center"
+        MDScreen:
+            name: "home1"
+            MDLabel:
+                text: "Home1"
+                pos_hint: {"center_y": .5}
+                halign: "center"
+        MDScreen:
+            name: "search1"
+            MDLabel:
+                text: "Search1"
+                pos_hint: {"center_y": .5}
+                halign: "center"
+
+    NavBar:
+        size_hint: .85, .1
+        pos_hint: {"center_x": .5, "center_y": .1}
+        elevation: 10
+        md_bg_color: 1, 1, 1, 1  #Navbar Farbe
+        radius: [16]
+        MDGridLayout:
+            cols: 4
+            size_hint_x: .9
+            spacing: 8
+            pos_hint: {"center_x": .5, "center_y": .5}
+            MDIconButton:
+                id: nav_icon1
+                icon: "home"
+                ripple_scale: 0
+                user_font_size: "30sp"
+                theme_text_color: "Custom"
+                text_color: 1, 0, 0, 1
+                size_hint_x: 0.25  # Alle MDIconButton nehmen gleich viel Platz ein
+                on_release:
+                    scr.current = "home"
+                    app.change_color(self)
+            MDIconButton:
+                id: nav_icon2
+                icon: "magnify"
+                ripple_scale: 0
+                user_font_size: "30sp"
+                theme_text_color: "Custom"
+                text_color: 0, 0, 0, 1
+                size_hint_x: 0.25  # Alle MDIconButton nehmen gleich viel Platz ein
+                on_release:
+                    scr.current = "search"
+                    app.change_color(self)
+
+            MDIconButton:
+                id: nav_icon3
+                icon: "home"
+                ripple_scale: 0
+                user_font_size: "30sp"
+                theme_text_color: "Custom"
+                text_color: 0, 0, 0, 1
+                size_hint_x: 0.25  # Alle MDIconButton nehmen gleich viel Platz ein
+                on_release:
+                    scr.current = "home1"
+                    app.change_color(self)
