@@ -43,9 +43,13 @@ class MqttHandler:
         print(msg.topic + " - " + str(msg.payload))
 
     def publish_message(self, message, retain=False, qos=1):
+        self.__delete_old_retained_messages()
+        
         self.client.connect(self.config.broker_adress, self.config.port)
         time.sleep(0.5)
         self.client.publish(self.topic, payload=message, qos=qos, retain=retain)
+        
+        
 
     def start_loop(self):
         self.client.loop_start()
@@ -58,3 +62,9 @@ class MqttHandler:
 
     def get_retained_messages(self):
         return self.__retainedMessages.copy()
+
+    #TODO
+    def __delete_old_retained_messages(self):
+        self.client.connect(self.config.broker_adress, self.config.port)
+        time.sleep(0.5)
+        self.client.publish(self.topic, payload="", qos=0, retain=True)

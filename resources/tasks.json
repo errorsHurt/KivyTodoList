@@ -1,19 +1,37 @@
 {
     "tasks": [
         {
-            "uuid": "18099c0b-7c04-47ed-90a6-5b8428cb0860",
+            "uuid": "044996fb-8183-406e-8eab-423838b67a71",
+            "client-id": "e4947a81-dbc2-40de-aad8-0dd3eab591f0",
+            "message": "TaskState Test",
+            "state": true
+        },
+        {
+            "uuid": "6e6eb9b4-99f7-4d18-b59b-271ccce17e48",
             "client-id": "e4947a81-dbc2-40de-aad8-0dd3eab591f0",
             "message": "New Task",
             "state": false
         },
         {
-            "uuid": "6d3fc295-d24c-4fe0-aa53-095db53efc35",
+            "uuid": "d6fa938f-f9e5-4d27-823e-4fc011e2393a",
             "client-id": "e4947a81-dbc2-40de-aad8-0dd3eab591f0",
             "message": "New Task",
             "state": false
         },
         {
-            "uuid": "729e820a-5b1f-45cf-b831-a7c5c57c1de0",
+            "uuid": "92b402f2-4502-411e-a9b2-d3415addfc99",
+            "client-id": "e4947a81-dbc2-40de-aad8-0dd3eab591f0",
+            "message": "New Task",
+            "state": false
+        },
+        {
+            "uuid": "b507fc88-bb75-4012-9073-ecde36d948e6",
+            "client-id": "e4947a81-dbc2-40de-aad8-0dd3eab591f0",
+            "message": "New Task",
+            "state": false
+        },
+        {
+            "uuid": "709958de-0c58-433f-ae3f-209b2a6648a0",
             "client-id": "e4947a81-dbc2-40de-aad8-0dd3eab591f0",
             "message": "New Task",
             "state": false

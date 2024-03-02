@@ -1,87 +1,9 @@
-#:import NoTransition kivy.uix.screenmanager.NoTransition
-
-MDFloatLayout:
-    md_bg_color: 0, 0, 0, 1
-    ScreenManager:
-        id: scr
-        transition: NoTransition()
-        MainToDoList:
-        LoginScreen:
-        MDScreen:
-            name: "home"
-            MDLabel:
-                text: "Home"
-                pos_hint: {"center_y": .5}
-                halign: "center"
-        MDScreen:
-            name: "search"
-            MDLabel:
-                text: "Search"
-                pos_hint: {"center_y": .5}
-                halign: "center"
-        MDScreen:
-            name: "home1"
-            MDLabel:
-                text: "Home1"
-                pos_hint: {"center_y": .5}
-                halign: "center"
-        MDScreen:
-            name: "search1"
-            MDLabel:
-                text: "Search1"
-                pos_hint: {"center_y": .5}
-                halign: "center"
-
-    NavBar:
-        size_hint: .85, .1
-        pos_hint: {"center_x": .5, "center_y": .1}
-        elevation: 10
-        md_bg_color: 1, 1, 1, 1  #Navbar Farbe
-        radius: [16]
-        MDGridLayout:
-            cols: 4
-            size_hint_x: .9
-            spacing: 8
-            pos_hint: {"center_x": .5, "center_y": .5}
-            MDIconButton:
-                id: nav_icon1
-                icon: "home"
-                ripple_scale: 0
-                user_font_size: "30sp"
-                theme_text_color: "Custom"
-                text_color: 1, 0, 0, 1
-                size_hint_x: 0.25  # Alle MDIconButton nehmen gleich viel Platz ein
-                on_release:
-                    scr.current = "home"
-                    app.change_color(self)
-            MDIconButton:
-                id: nav_icon2
-                icon: "magnify"
-                ripple_scale: 0
-                user_font_size: "30sp"
-                theme_text_color: "Custom"
-                text_color: 0, 0, 0, 1
-                size_hint_x: 0.25  # Alle MDIconButton nehmen gleich viel Platz ein
-                on_release:
-                    scr.current = "search"
-                    app.change_color(self)
-
-            MDIconButton:
-                id: nav_icon3
-                icon: "home"
-                ripple_scale: 0
-                user_font_size: "30sp"
-                theme_text_color: "Custom"
-                text_color: 0, 0, 0, 1
-                size_hint_x: 0.25  # Alle MDIconButton nehmen gleich viel Platz ein
-                on_release:
-                    scr.current = "home1"
-                    app.change_color(self)
 
 <ToDoListItem>:
     size_hint_y: None
     height: 48
     orientation: 'horizontal'
+    padding: [20, 0, 0, 0]
     canvas.before:
         Color:
             rgba: 1, 1, 1, 1  # Black color
@@ -91,37 +13,35 @@ MDFloatLayout:
     CheckBox:
         id: checkbox
         active: root.is_done
-        on_active: root.on_checkbox_active(*args)
-
+        size_hint: None, None
+        size: 24, 24
+        pos_hint: {'center_y': 0.5, 'x': 0.5}  # Adjust 'x' for left spacing
+        on_active: root.on_checkbox_change(*args)
     Label:
-        id: task_label  # Ensure this id matches the one used in your Python code
+        id: task_label
         text: root.text
         color: 0, 0, 0, 1
-
     Button:
         id: edit_button
-        #background_normal: 'path/to/your/icon.png'
-        #background_down: 'path/to/your/icon_pressed.png'
         text: 'Edit'
         size_hint_x: 0.2
         opacity: 0
         disabled: True
         on_release: app.root.get_screen('main').edit_item(root)
-
     Button:
         id: delete_button
-        #background_normal: './pics/trash_closed.png'
-        #background_down: './pics/trash_open.png'
         text: 'Delete'
         size_hint_x: 0.2
         opacity: 0
         disabled: True
         on_release: app.root.get_screen('main').delete_item(root.id)
+
 <MainToDoList>:
     name: 'main'
     orientation: 'vertical'
     BoxLayout:
         size_hint_y: None
+        padding: [20, 20, 20, 20]
         height: 50
         spacing: 10
         padding: 10
@@ -136,45 +56,6 @@ MDFloatLayout:
             size_hint_y: None
             height: self.minimum_height
             orientation: 'vertical'
-
-    BoxLayout:
-        orientation: 'vertical'
-        BoxLayout:
-            id: login_panel
-            size_hint_y: None
-            height: '200dp'  # Adjust as needed
-            pos_hint: {'top': 0}  # Start off-screen or invisible
-            opacity: 0  # Start as invisible
-
-            GridLayout:
-                cols: 1
-                size_hint_y: None
-                height: self.minimum_height
-
-                TextInput:
-                    id: username_input
-                    hint_text: 'Username'
-                    size_hint_y: None
-                    height: '40dp'
-
-                TextInput:
-                    id: password_input
-                    hint_text: 'Password'
-                    password: True
-                    size_hint_y: None
-                    height: '40dp'
-
-                TextInput:
-                    id: server_input
-                    hint_text: 'Server'
-                    size_hint_y: None
-                    height: '40dp'
-
-                Button:
-                    text: 'Connect'
-                    size_hint_y: None
-                    height: '40dp'
-                    on_release: root.connect()  # Define this method in your MainToDoList class
 
 
     BoxLayout:
@@ -207,21 +88,88 @@ MDFloatLayout:
     name: 'login'
     BoxLayout:
         orientation: 'vertical'
-        TextInput:
-            id: username_input
-            hint_text: 'Username'
-        TextInput:
-            id: password_input
-            hint_text: 'Password'
-            password: True
-        TextInput:
-            id: topic_input
-            hint_text: 'Topich'
-        Button:
-            text: 'Connect'
-            # Define the connection logic here
-            on_release:
-                app.root.get_screen('login').connect(username_input, password_input, topic_input)
-        Button:
-            text: 'Back to Main'
-            on_release: app.root.current = 'main'
+        spacing: 20  # Space between the label and the nested BoxLayout
+
+        Label:
+            text: 'Login'
+            size_hint_y: None
+            height: 50
+            font_size: '20sp'
+
+        Widget:
+            # This widget acts as a flexible spacer
+            size_hint_y: None
+            height: 20  # Adjust this value to manage the space above the login form
+
+        # Inner BoxLayout for the login widgets
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None  # Allow the BoxLayout to grow based on its content
+            height: self.minimum_height  # Calculate height based on the content
+            pos_hint: {'center_y': .5}  # Center this layout in the vertical space
+            padding: [20, 20, 20, 20]  # Padding around the edges of the BoxLayout
+            spacing: 10
+
+            TextInput:
+                id: username_input
+                hint_text: 'Username'
+                size_hint_y: None
+                height: 40
+                padding_y: (10, 10)
+
+            TextInput:
+                id: password_input
+                hint_text: 'Password'
+                password: True
+                size_hint_y: None
+                height: 40
+                padding_y: (10, 10)
+
+            TextInput:
+                id: server_input
+                hint_text: 'Server'
+                size_hint_y: None
+                height: 40
+                padding_y: (10, 10)
+
+            TextInput:
+                id: server_input
+                hint_text: 'Server'
+                size_hint_y: None
+                height: 40
+                padding_y: (10, 10)
+
+        Widget:
+            # Another flexible spacer, can adjust height as needed
+            size_hint_y: None
+            height: 100
+
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None  # Allow the BoxLayout to grow based on its content
+            height: self.minimum_height  # Calculate height based on the content
+            pos_hint: {'center_y': .5}  # Center this layout in the vertical space
+            padding: [20, 20, 20, 20]
+            spacing: 10
+
+            Button:
+                text: 'Connect'
+                size_hint_y: None
+                height: 100
+
+
+        Widget:
+            # Another flexible spacer, can adjust height as needed
+            size_hint_y: None
+            height: 20  # Adjust this value to manage the space below the login form
+
+        BoxLayout:
+            size_hint_y: 0.0
+            orientation: 'horizontal'
+            Button:
+                text: 'Back'
+                size_hint: None, None
+                size: dp(60), dp(60)
+                on_release: app.root.current = 'main'
+

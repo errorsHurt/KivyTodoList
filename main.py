@@ -76,11 +76,12 @@ class ToDoListItem(BoxLayout):
                 if item != self:
                     item.hide_buttons()
 
-    def on_checkbox_active(self, checkbox, value):
+    def on_checkbox_change(self, checkbox, value):
         for item in App.get_running_app().root.get_screen('main').ids.rv.data:
-            if item['id'] == self.id:
+            task_uuid = item['id']
+            if task_uuid == self.id:
                 item['is_done'] = value
-                break
+                TaskStorageHandler._set_task_state(task_uuid, bool(value))
 
     def on_data(self, *args):
         # Explicitly reset the checkbox state based on the item's data
@@ -92,15 +93,14 @@ class MainToDoList(Screen):
     def __init__(self, **kw):
         super().__init__(**kw)
 
-    def initialize(self, tasks):
+    def load_tasks_in_local_list(self, tasks):
+        self.ids.rv.data = []
         for task in tasks:
             self.ids.rv.data.append({'id': str(task["uuid"]),
                                      'text': task["message"],
                                      'is_done': task["state"]})
 
     def add_item(self, uuid=""):
-
-        mqtt_client.publish_message("Moin")
 
         if uuid == "":
             uuid = UUID.uuid4()  # Generate a unique ID
@@ -111,19 +111,23 @@ class MainToDoList(Screen):
         self.ids.rv.refresh_from_data()
         # Wenn "+"
 
-        TaskStorageHandler._add_task(str(mqtt_client.config.client_id),text)
+        TaskStorageHandler._add_task(str(mqtt_client.config.client_id), text)
 
         data = TaskStorageHandler._read_data(True)
         mqtt_client.publish_message(data, True)
-
-
 
     def delete_item(self, task_uuid):
 
         TaskStorageHandler._delete_task(task_uuid)
 
         self.ids.rv.data = [item for item in self.ids.rv.data if item['id'] != task_uuid]
-        self.ids.rv.refresh_from_data()
+
+        data = TaskStorageHandler._read_data()
+        tasks = data["tasks"]
+        self.load_tasks_in_local_list(tasks)
+
+        data = TaskStorageHandler._read_data(True)
+        mqtt_client.publish_message(data, True)
 
     def edit_item(self, item_widget):
         # Trigger editing using the item's widget but reference by ID
@@ -132,6 +136,8 @@ class MainToDoList(Screen):
         self.ids.global_edit_text.disabled = False
         self.ids.global_edit_text.opacity = 1
         self.ids.global_edit_text.focus = True
+        # 1. Das Item mit der UUID finden und in der .json auch umbenennen.
+        # 2. Liste neu laden und Publicchhhen
 
     def apply_global_edit(self):
         new_text = self.ids.global_edit_text.text
@@ -180,7 +186,7 @@ class ToDoApp(MDApp):
         data = TaskStorageHandler._read_data()
         tasks = data["tasks"]
 
-        todoscreen.initialize(tasks)
+        todoscreen.load_tasks_in_local_list(tasks)
         return sm
 
     def change_color(self, instance):
