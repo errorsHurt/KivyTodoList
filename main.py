@@ -89,6 +89,15 @@ class ToDoListItem(BoxLayout):
 
 class MainToDoList(Screen):
 
+    def __init__(self, **kw):
+        super().__init__(**kw)
+
+    def initialize(self, tasks):
+        for task in tasks:
+            self.ids.rv.data.append({'id': str(task["uuid"]),
+                                     'text': task["message"],
+                                     'is_done': task["state"]})
+
     def add_item(self, uuid=""):
 
         mqtt_client.publish_message("Moin")
@@ -100,17 +109,20 @@ class MainToDoList(Screen):
         # Explicitly set `is_done` to False for new items
         self.ids.rv.data.append({'id': str(uuid), 'text': text, 'is_done': False})
         self.ids.rv.refresh_from_data()
-
         # Wenn "+"
-        if uuid == "":
-            TaskStorageHandler._add_task(str(mqtt_client.config.client_id),text)
 
-            # Darf NUR passieren wenn wir auf "+" klicken
-            # 1. Füge zu tasks.json den neuen Task hinzu
-            # 2. Sende den Inhalt der tasks.json an den MQTT Broker
+        TaskStorageHandler._add_task(str(mqtt_client.config.client_id),text)
 
-    def delete_item(self, item_id):
-        self.ids.rv.data = [item for item in self.ids.rv.data if item['id'] != item_id]
+        data = TaskStorageHandler._read_data(True)
+        mqtt_client.publish_message(data, True)
+
+
+
+    def delete_item(self, task_uuid):
+
+        TaskStorageHandler._delete_task(task_uuid)
+
+        self.ids.rv.data = [item for item in self.ids.rv.data if item['id'] != task_uuid]
         self.ids.rv.refresh_from_data()
 
     def edit_item(self, item_widget):
@@ -156,18 +168,24 @@ class ToDoApp(MDApp):
         Builder.load_file('resources/layout.kv')
 
         sm = ScreenManager()
-        sm.add_widget(MainToDoList(name='main'))
-        sm.add_widget(LoginScreen(name='login'))
+
+        todoscreen = MainToDoList(name='main')
+        loginscreen = LoginScreen(name='login')
+
+        sm.add_widget(todoscreen)
+        sm.add_widget(loginscreen)
         # Lese alles aus tasks.json
         # For element in tasks:
-        # add_item(task,uuid,status)
 
+        data = TaskStorageHandler._read_data()
+        tasks = data["tasks"]
+
+        todoscreen.initialize(tasks)
         return sm
 
     def change_color(self, instance):
         if instance in self.root.ids.values():
             current_id = list(self.root.ids.keys())[list(self.root.ids.values()).index(instance)]
-            # print(current_id)
             for i in range(3):  # Je nach dem wie viele Icons
                 if f"nav_icon{i + 1}" == current_id:
                     self.root.ids[f"nav_icon{i + 1}"].text_color = 1, 0, 0, 1

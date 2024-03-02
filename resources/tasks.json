@@ -1,16 +1,22 @@
 {
-  "tasks": [
-    {
-      "uuid": "blabla",
-      "client-id": "283980f1-c138-4fc6-88f9-845f618d8516",
-      "message": "Hallo",
-      "state": true
-    },
-    {
-      "uuid": "huihuihui",
-      "client-id": "283980f1-c138-4fc6-88f9-845f618d8516",
-      "message": "Hallo",
-      "state": false
-    }
-  ]
+    "tasks": [
+        {
+            "uuid": "18099c0b-7c04-47ed-90a6-5b8428cb0860",
+            "client-id": "e4947a81-dbc2-40de-aad8-0dd3eab591f0",
+            "message": "New Task",
+            "state": false
+        },
+        {
+            "uuid": "6d3fc295-d24c-4fe0-aa53-095db53efc35",
+            "client-id": "e4947a81-dbc2-40de-aad8-0dd3eab591f0",
+            "message": "New Task",
+            "state": false
+        },
+        {
+            "uuid": "729e820a-5b1f-45cf-b831-a7c5c57c1de0",
+            "client-id": "e4947a81-dbc2-40de-aad8-0dd3eab591f0",
+            "message": "New Task",
+            "state": false
+        }
+    ]
 }

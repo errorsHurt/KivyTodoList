@@ -84,3 +84,28 @@ class TaskStorageHandler:
         with open(tasks_data_path, "w") as file:
             json.dump(data, file, indent=4)
             file.close()
+
+    @staticmethod
+    def _read_data(as_string: bool = False):
+        with open(tasks_data_path, "r") as file:
+            if as_string:
+                return str(json.load(file))
+            return json.load(file)
+
+    def _delete_task(uuid):
+        with open(tasks_data_path, "r") as read_file:
+            data = json.load(read_file)
+
+            tasks = data.get("tasks", [])  # Holen der Liste von Aufgaben aus den Daten
+
+            for index, task in enumerate(tasks):
+
+                if task.get('uuid') == uuid:
+                    del tasks[index]
+                    data["tasks"] = tasks  # Aktualisieren der Aufgabenliste in den Daten
+                    with open(tasks_data_path, "w") as write_file:
+                        json.dump(data, write_file, indent=4)
+                        write_file.close()
+            read_file.close()
+
+
