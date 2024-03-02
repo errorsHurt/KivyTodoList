@@ -1,10 +1,12 @@
 #:import NoTransition kivy.uix.screenmanager.NoTransition
 
 MDFloatLayout:
-    md_bg_color: 1, 1, 1, 1
+    md_bg_color: 0, 0, 0, 1
     ScreenManager:
         id: scr
         transition: NoTransition()
+        MainToDoList:
+        LoginScreen:
         MDScreen:
             name: "home"
             MDLabel:
@@ -75,3 +77,151 @@ MDFloatLayout:
                 on_release:
                     scr.current = "home1"
                     app.change_color(self)
+
+<ToDoListItem>:
+    size_hint_y: None
+    height: 48
+    orientation: 'horizontal'
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1  # Black color
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    CheckBox:
+        id: checkbox
+        active: root.is_done
+        on_active: root.on_checkbox_active(*args)
+
+    Label:
+        id: task_label  # Ensure this id matches the one used in your Python code
+        text: root.text
+        color: 0, 0, 0, 1
+
+    Button:
+        id: edit_button
+        #background_normal: 'path/to/your/icon.png'
+        #background_down: 'path/to/your/icon_pressed.png'
+        text: 'Edit'
+        size_hint_x: 0.2
+        opacity: 0
+        disabled: True
+        on_release: app.root.get_screen('main').edit_item(root)
+
+    Button:
+        id: delete_button
+        #background_normal: './pics/trash_closed.png'
+        #background_down: './pics/trash_open.png'
+        text: 'Delete'
+        size_hint_x: 0.2
+        opacity: 0
+        disabled: True
+        on_release: app.root.get_screen('main').delete_item(root.id)
+<MainToDoList>:
+    name: 'main'
+    orientation: 'vertical'
+    BoxLayout:
+        size_hint_y: None
+        height: 50
+        spacing: 10
+        padding: 10
+
+
+    RecycleView:
+        id: rv
+        viewclass: 'ToDoListItem'
+        RecycleBoxLayout:
+            default_size: None, dp(48)
+            default_size_hint: 1, None
+            size_hint_y: None
+            height: self.minimum_height
+            orientation: 'vertical'
+
+    BoxLayout:
+        orientation: 'vertical'
+        BoxLayout:
+            id: login_panel
+            size_hint_y: None
+            height: '200dp'  # Adjust as needed
+            pos_hint: {'top': 0}  # Start off-screen or invisible
+            opacity: 0  # Start as invisible
+
+            GridLayout:
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+
+                TextInput:
+                    id: username_input
+                    hint_text: 'Username'
+                    size_hint_y: None
+                    height: '40dp'
+
+                TextInput:
+                    id: password_input
+                    hint_text: 'Password'
+                    password: True
+                    size_hint_y: None
+                    height: '40dp'
+
+                TextInput:
+                    id: server_input
+                    hint_text: 'Server'
+                    size_hint_y: None
+                    height: '40dp'
+
+                Button:
+                    text: 'Connect'
+                    size_hint_y: None
+                    height: '40dp'
+                    on_release: root.connect()  # Define this method in your MainToDoList class
+
+
+    BoxLayout:
+        size_hint_y: 0.1
+        orientation: 'horizontal'
+        Button:
+            text: 'Settings'
+            size_hint: None, None
+            size: dp(60), dp(60)
+            on_release: app.root.current = 'login'
+
+        TextInput:
+            id: global_edit_text
+            size_hint_y: 0.1
+            multiline: False
+            opacity: 0
+            disabled: True
+            on_text_validate: root.apply_global_edit()
+
+        Button:
+            text: '+'
+            size_hint: None, None
+            size: dp(60), dp(60)
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            on_release: root.add_item()
+            opacity: 1
+            disabled: False
+
+<LoginScreen>:
+    name: 'login'
+    BoxLayout:
+        orientation: 'vertical'
+        TextInput:
+            id: username_input
+            hint_text: 'Username'
+        TextInput:
+            id: password_input
+            hint_text: 'Password'
+            password: True
+        TextInput:
+            id: topic_input
+            hint_text: 'Topich'
+        Button:
+            text: 'Connect'
+            # Define the connection logic here
+            on_release:
+                app.root.get_screen('login').connect(username_input, password_input, topic_input)
+        Button:
+            text: 'Back to Main'
+            on_release: app.root.current = 'main'

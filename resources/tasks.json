@@ -1,0 +1,16 @@
+{
+  "tasks": [
+    {
+      "uuid": "blabla",
+      "client-id": "283980f1-c138-4fc6-88f9-845f618d8516",
+      "message": "Hallo",
+      "state": true
+    },
+    {
+      "uuid": "huihuihui",
+      "client-id": "283980f1-c138-4fc6-88f9-845f618d8516",
+      "message": "Hallo",
+      "state": false
+    }
+  ]
+}

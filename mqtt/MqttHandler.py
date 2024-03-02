@@ -1,11 +1,15 @@
+import time
+
 import paho.mqtt.client as paho
 from paho import mqtt
 from mqtt.MqttConfig import MqttConfig
 
 
-class MqttClient:
+class MqttHandler:
 
     def __init__(self, config: MqttConfig):
+
+        self.config = config
 
         self.topic = config.topic
 
@@ -16,13 +20,14 @@ class MqttClient:
 
         self.client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
         self.client.username_pw_set(config.username, config.password)
-        self.client.connect(config.broker_adress, config.port)
 
         self.client.on_subscribe = self.on_subscribe
         self.client.on_message = self.on_message
         self.client.on_publish = self.on_publish
 
         self.client.subscribe(self.topic, qos=config.qos)
+
+
 
     def on_connect(self, client, userdata, flags, rc, properties=None):
         print("Connection received with code %s." % rc)
@@ -38,6 +43,8 @@ class MqttClient:
         print(msg.topic + " - " + str(msg.payload))
 
     def publish_message(self, message, retain=False, qos=1):
+        self.client.connect(self.config.broker_adress, self.config.port)
+        time.sleep(0.5)
         self.client.publish(self.topic, payload=message, qos=qos, retain=retain)
 
     def start_loop(self):

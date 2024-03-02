@@ -1,11 +1,13 @@
-from mqtt.MqttHandler import MqttClient
+from mqtt.MqttHandler import MqttHandler
 from mqtt.MqttThreadManager import MqttThreadManager
 from mqtt.MqttConfig import MqttConfig
 
 if __name__ == "__main__":
 
-    config = MqttConfig("resources/config.yaml")
-    mqtt_client = MqttClient(config)
+    config = MqttConfig.load_from_resource()
+    mqtt_client = MqttHandler(config)
+
+    mqtt_client.client.connect(config.broker_adress, config.port)
 
     mqtt_thread_manager = MqttThreadManager(mqtt_client)
     mqtt_thread_manager.start_mqtt_thread()
