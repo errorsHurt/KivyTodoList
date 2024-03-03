@@ -172,7 +172,7 @@ class ToDoApp(MDApp):
 
     def build(self):
         Builder.load_file('resources/layout.kv')
-
+        self.icon = 'resources/app_icon.png'
         sm = ScreenManager()
 
         todoscreen = MainToDoList(name='main')
