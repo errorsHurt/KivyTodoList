@@ -10,7 +10,7 @@ from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import ObjectProperty
 
-from TaskStorageHandler import TaskStorageHandler
+from storage.TaskStorageHandler import TaskStorageHandler
 from mqtt.MqttHandler import MqttHandler
 from mqtt.MqttConfig import MqttConfig
 import uuid as UUID
