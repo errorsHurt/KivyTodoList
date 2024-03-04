@@ -1,13 +1,12 @@
 import json
 import uuid
 
-tasks_data_path = "../resources/tasks.json"
+#tasks_data_path = "../tasks.json"
+# Das hier MUSS so angegeben werden
+tasks_data_path = "resources/tasks.json"
 
 
 class TaskStorageHandler:
-
-    def __init__(self):
-        pass
 
     @staticmethod
     def _add_task(client_id, message):
@@ -62,6 +61,15 @@ class TaskStorageHandler:
             print("Es ist ein Fehler beim schreiben der Datei aufgetreten:", state, e)
 
     @staticmethod
+    def _read_data():
+        try:
+            with open(tasks_data_path, "r") as file:
+                file.seek(0)
+                return json.load(file)
+        except Exception as e:
+            print("Es ist ein Fehler aufgetreten:", e)
+
+    @staticmethod
     def _write_data(data):
         with open(tasks_data_path, "w") as file:
             json.dump(data, file, indent=4)
@@ -83,4 +91,17 @@ class TaskStorageHandler:
                         write_file.close()
             read_file.close()
 
-
+    @staticmethod
+    def _edit_task(uuid, txt):
+        try:
+            with open(tasks_data_path, "r") as read_file:
+                data = json.load(read_file)
+                tasks = data.get("tasks", [])
+                for task in tasks:
+                    if task.get('uuid') == uuid:
+                        task['message'] = txt
+                        break
+                with open(tasks_data_path, "w") as write_file:
+                    json.dump(data, write_file, indent=4)
+        except Exception as e:
+            print("Fehler beim Bearbeiten der Aufgabe:", e)

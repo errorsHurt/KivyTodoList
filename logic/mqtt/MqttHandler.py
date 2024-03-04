@@ -1,14 +1,16 @@
+import threading
 import time
 
 import paho.mqtt.client as paho
 from paho import mqtt
-from mqtt.MqttConfig import MqttConfig
+from logic.mqtt.MqttConfig import MqttConfig
+from logic.mqtt.MqttThreadManager import MqttThreadManager
+
 
 
 class MqttHandler:
 
     def __init__(self, config: MqttConfig):
-
         self.config = config
 
         self.topic = config.topic
@@ -28,7 +30,6 @@ class MqttHandler:
         self.client.subscribe(self.topic, qos=config.qos)
 
 
-
     def on_connect(self, client, userdata, flags, rc, properties=None):
         print("Connection received with code %s." % rc)
 
@@ -39,17 +40,16 @@ class MqttHandler:
         print("Subscribed: " + str(mid) + " [%s]" % granted_qos)
 
     def on_message(self, client, userdata, msg):
-        self.__retainedMessages.append(msg.payload)
+        print('ONCONNECT')
+        self.__retainedMessages.append(msg.payload.decode("utf-8"))
         print(msg.topic + " - " + str(msg.payload))
 
     def publish_message(self, message, retain=False, qos=1):
         self.__delete_old_retained_messages()
-        
+
         self.client.connect(self.config.broker_adress, self.config.port)
         time.sleep(0.5)
         self.client.publish(self.topic, payload=message, qos=qos, retain=retain)
-        
-        
 
     def start_loop(self):
         self.client.loop_start()
@@ -63,7 +63,7 @@ class MqttHandler:
     def get_retained_messages(self):
         return self.__retainedMessages.copy()
 
-    #TODO
+    # TODO
     def __delete_old_retained_messages(self):
         self.client.connect(self.config.broker_adress, self.config.port)
         time.sleep(0.5)

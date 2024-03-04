@@ -1,6 +1,6 @@
-from mqtt.MqttHandler import MqttHandler
-from mqtt.MqttThreadManager import MqttThreadManager
-from mqtt.MqttConfig import MqttConfig
+from logic.mqtt.MqttHandler import MqttHandler
+from logic.mqtt.MqttThreadManager import MqttThreadManager
+from logic.mqtt.MqttConfig import MqttConfig
 
 if __name__ == "__main__":
 
