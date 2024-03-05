@@ -40,22 +40,16 @@ class MainToDoList(Screen):
         self.mqtt_client.publish_message(str(data), True)
 
     def sync_items(self):
-        # connect
-        self.mqtt_client.client.subscribe(self.mqtt_client.config.topic, qos=self.mqtt_client.config.qos)
-        self.mqtt_client.start_loop()
-        time.sleep(2)
-        self.mqtt_client.stop_loop()
-
-        print('A')
-        msg = self.mqtt_client.get_retained_messages()
+        msg = self.mqtt_client.lissen()
+        print('#############')
         print(msg)
+        print('#############')
         if msg:
             print('B')
-            TaskStorageHandler._write_data(msg)
-            #data = TaskStorageHandler._read_data()
-            #tasks = data["tasks"]
-            tasks = msg["tasks"]
+            TaskStorageHandler._write_data(str(msg))
+            tasks = msg.get("tasks", [])
             self.load_tasks_in_local_list(tasks)
+
 
     def delete_item(self, task_uuid):
         # Hier müssen wir bevor das Item gelöscht wird die Sync Funktion aufrufen und dann das Item Löschen.

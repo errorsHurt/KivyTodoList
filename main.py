@@ -5,7 +5,6 @@ from kivy.uix.screenmanager import ScreenManager
 from logic.storage.TaskStorageHandler import TaskStorageHandler
 from logic.mqtt.MqttHandler import MqttHandler
 from logic.mqtt.MqttConfig import MqttConfig
-from logic.mqtt.MqttThreadManager import MqttThreadManager
 # Screens importieren
 from ui.screens.MainScreen import MainToDoList
 from ui.screens.SettingScreen import LoginScreen
@@ -36,7 +35,8 @@ class ToDoApp(MDApp):
         sm.add_widget(loginscreen)
 
         data = TaskStorageHandler._read_data()
-        tasks = data.get("tasks", [])
+        tasks = data["tasks"]
+        print('Hallo1111')
         todoscreen.load_tasks_in_local_list(tasks)
         return sm
 

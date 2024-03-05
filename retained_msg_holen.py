@@ -1,6 +1,7 @@
 import random
 import time
 import ssl
+import threading
 
 from paho.mqtt import client as mqtt_client
 
@@ -8,15 +9,18 @@ from paho.mqtt import client as mqtt_client
 broker = '4757e0b60f564e78900a097c3086a003.s1.eu.hivemq.cloud'
 port = 8883
 topic = "todoapp/tasks"
-# generate client ID with pub prefix randomly
-client_id = f'python-mqtt-{random.randint(0, 1000)}'
+# generate client ID with sub prefix randomly
+client_id = f'python-mqtt-sub-{random.randint(0, 1000)}'
 username = 'testtest'
 password = 'Test1234'
+
+message_received = threading.Event()
 
 def connect_mqtt():
     def on_connect(client, userdata, flags, rc):
         if rc == 0:
             print("Connected to MQTT Broker!")
+            client.subscribe(topic)
         else:
             print("Failed to connect, return code %d\n", rc)
 
@@ -31,25 +35,18 @@ def connect_mqtt():
     return client
 
 
-def publish(client):
-    msg_count = 0
-    while True:
-        time.sleep(1)
-        msg = f"messages: {msg_count}"
-        result = client.publish(topic, msg, retain=True)  # Set retain flag to True
-        # result: [0, 1]
-        status = result[0]
-        if status == 0:
-            print(f"Send `{msg}` to topic `{topic}` as retained")
-        else:
-            print(f"Failed to send message to topic {topic}")
-        msg_count += 1
-
+def on_message(client, userdata, msg):
+    print(f"Received message: {msg.payload.decode()}")
+    client.disconnect()
+    message_received.set()  # Setze das Event, um das Skript zu beenden
 
 def run():
     client = connect_mqtt()
+    client.on_message = on_message
     client.loop_start()
-    publish(client)
+    message_received.wait()  # Warte auf das Event, das vom on_message gesetzt wird
+    client.loop_stop()
+    client.disconnect()
 
 
 if __name__ == '__main__':

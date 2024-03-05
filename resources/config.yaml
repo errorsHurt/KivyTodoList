@@ -1,5 +1,5 @@
 mqtt:
-  client-id: "e4947a81-dbc2-40de-aad8-0dd3eab591f0"
+  client-id: "e4947a81-dbc2-40de-aad8-0dd3eab591f5"
   connection:
     broker-adress: "4757e0b60f564e78900a097c3086a003.s1.eu.hivemq.cloud"
     port: 8883
