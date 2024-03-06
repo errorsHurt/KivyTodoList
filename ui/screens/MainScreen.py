@@ -16,8 +16,8 @@ class MainToDoList(Screen):
         self.ids.rv.data = []
         for task in tasks:
             self.ids.rv.data.append({'id': str(task["uuid"]),
-                                     'text': task["message"],
-                                     'is_done': task["state"]})
+                                     'text': str(task["message"]),
+                                     'is_done': str(task["state"])})
 
     def add_item(self, uuid=""):
 
