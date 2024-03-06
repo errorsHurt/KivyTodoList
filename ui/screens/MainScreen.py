@@ -58,7 +58,7 @@ class MainToDoList(Screen):
         # Somit dürfte das eigentlich kein problem darstellen.
         # Später können wir theoretisch einfach den Thread über die "sync_items" funktion rüber laufen lassen.
 
-        self.sync_items()
+        #self.sync_items()
         TaskStorageHandler._delete_task(task_uuid)
 
         self.ids.rv.data = [item for item in self.ids.rv.data if item['id'] != task_uuid]
@@ -79,11 +79,7 @@ class MainToDoList(Screen):
         # 1. Das Item mit der UUID finden und in der .json auch umbenennen.
         # 2. Liste neu laden und Publicchhhen
 
-        # MainToDoList.sync_items()
-        TaskStorageHandler._edit_task(self.selected_item_id, txt=self.ids.global_edit_text.text)
-        time.sleep(1)
-        data = TaskStorageHandler._read_data()
-        self.mqtt_client.publish_message(data, True)
+        self.sync_items()
 
     def apply_global_edit(self):
         new_text = self.ids.global_edit_text.text
@@ -98,3 +94,10 @@ class MainToDoList(Screen):
         self.ids.global_edit_text.opacity = 0
         self.ids.global_edit_text.disabled = True
         self.selected_item_id = None
+        print("Hallo")
+
+
+        TaskStorageHandler._edit_task(self.selected_item_id, txt=self.ids.global_edit_text.text)
+        time.sleep(1)
+        data = TaskStorageHandler._read_data()
+        self.mqtt_client.publish_message(data, True)
