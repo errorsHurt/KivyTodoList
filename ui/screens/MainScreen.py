@@ -47,6 +47,7 @@ class MainToDoList(Screen):
                 msg = msg.replace("'", "\"").replace("True", "true").replace("False", "false")
                 data = json.loads(msg)
                 TaskStorageHandler._write_data(data)
+                self.load_tasks_in_local_list(data)
 
             except json.JSONDecodeError as e:
                 print("Fehler:", e)

@@ -4,7 +4,6 @@ import json
 import paho.mqtt.client as paho
 from paho import mqtt
 from logic.mqtt.MqttConfig import MqttConfig
-from logic.mqtt.MqttThreadManager import MqttThreadManager
 from paho.mqtt import client as mqtt_client
 import ssl
 import random
