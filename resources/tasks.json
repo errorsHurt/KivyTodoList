@@ -4,7 +4,7 @@
             "uuid": "3f5d9efa-1088-48ad-b529-6b8316911d48",
             "client-id": "e4947a81-dbc2-40de-aad8-0dd3eab591f5",
             "message": "New Task",
-            "state": false
+            "state": true
         }
     ]
 }

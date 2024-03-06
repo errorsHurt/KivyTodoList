@@ -15,7 +15,7 @@ class MainToDoList(Screen):
     def load_tasks_in_local_list(self, tasks):
         self.ids.rv.data = []
         for task in tasks:
-            self.ids.rv.data.append({'id': str(task["uuid"]),'text': task["message"],'is_done': task["state"]})
+            self.ids.rv.data.append({'id': str(task["uuid"]),'text': str(task["message"]),'is_done': str(task["state"])})
 
     def add_item(self, uuid=""):
 
