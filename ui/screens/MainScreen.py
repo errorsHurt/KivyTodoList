@@ -15,7 +15,9 @@ class MainToDoList(Screen):
     def load_tasks_in_local_list(self, tasks):
         self.ids.rv.data = []
         for task in tasks:
-            self.ids.rv.data.append({'id': str(task["uuid"]),'text': str(task["message"]),'is_done': str(task["state"])})
+            self.ids.rv.data.append({'id': str(task["uuid"]),
+                                     'text': task["message"],
+                                     'is_done': task["state"]})
 
     def add_item(self, uuid=""):
 
@@ -24,7 +26,7 @@ class MainToDoList(Screen):
 
         text = 'New Task'
         # Explicitly set `is_done` to False for new items
-        self.ids.rv.data.append({self.mqtt_client, uuid, text, False})
+        self.ids.rv.data.append({'id': str(uuid), 'text': text, 'is_done': False})
         self.ids.rv.refresh_from_data()
         # Wenn "+"
 
