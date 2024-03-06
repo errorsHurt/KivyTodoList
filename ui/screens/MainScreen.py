@@ -37,7 +37,7 @@ class MainToDoList(Screen):
         TaskStorageHandler._add_task(str(self.mqtt_client.config.client_id), text)
         # MainToDoList.sync_items()
         data = TaskStorageHandler._read_data()
-        self.mqtt_client.publish_message(str(data), True)
+        self.mqtt_client.publish_message(data, True)
 
     def sync_items(self):
         msg = self.mqtt_client.lissen()
@@ -67,7 +67,7 @@ class MainToDoList(Screen):
         tasks = data["tasks"]
         self.load_tasks_in_local_list(tasks)
 
-        self.mqtt_client.publish_message(str(data), True)
+        self.mqtt_client.publish_message(data, True)
 
     def edit_item(self, item_widget):
         # Trigger editing using the item's widget but reference by ID
@@ -81,8 +81,9 @@ class MainToDoList(Screen):
 
         # MainToDoList.sync_items()
         TaskStorageHandler._edit_task(self.selected_item_id, txt=self.ids.global_edit_text.text)
+        time.sleep(1)
         data = TaskStorageHandler._read_data()
-        self.mqtt_client.publish_message(str(data), True)
+        self.mqtt_client.publish_message(data, True)
 
     def apply_global_edit(self):
         new_text = self.ids.global_edit_text.text

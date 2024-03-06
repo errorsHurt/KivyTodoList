@@ -59,7 +59,7 @@ class MqttHandler:
 
         self.client.connect(self.config.broker_adress, self.config.port)
         time.sleep(0.5)
-        self.client.publish(self.topic, payload=message, qos=qos, retain=retain)
+        self.client.publish(self.topic, payload=str(message), qos=qos, retain=retain)
         self.client.disconnect()
 
     def start_loop(self):
