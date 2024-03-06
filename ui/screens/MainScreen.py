@@ -88,8 +88,14 @@ class MainToDoList(Screen):
             if item['id'] == self.selected_item_id:
                 item['text'] = new_text
                 break
+
         self.ids.rv.refresh_from_data()
         # Clear and hide the global TextInput
+        TaskStorageHandler._edit_task(self.selected_item_id, txt=self.ids.global_edit_text.text)
+        time.sleep(1)
+        data = TaskStorageHandler._read_data()
+        self.mqtt_client.publish_message(data, True)
+
         self.ids.global_edit_text.text = ''
         self.ids.global_edit_text.opacity = 0
         self.ids.global_edit_text.disabled = True
@@ -97,7 +103,4 @@ class MainToDoList(Screen):
         print("Hallo")
 
 
-        TaskStorageHandler._edit_task(self.selected_item_id, txt=self.ids.global_edit_text.text)
-        time.sleep(1)
-        data = TaskStorageHandler._read_data()
-        self.mqtt_client.publish_message(data, True)
+
