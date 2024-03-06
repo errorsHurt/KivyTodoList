@@ -19,12 +19,6 @@
             "state": false
         },
         {
-            "uuid": "92b402f2-4502-411e-a9b2-d3415addfc99",
-            "client-id": "e4947a81-dbc2-40de-aad8-0dd3eab591f0",
-            "message": "New TaskMoin",
-            "state": false
-        },
-        {
             "uuid": "b507fc88-bb75-4012-9073-ecde36d948e6",
             "client-id": "e4947a81-dbc2-40de-aad8-0dd3eab591f0",
             "message": "New Task",
@@ -39,18 +33,6 @@
         {
             "uuid": "0369bcfd-2c78-4d25-a7eb-88f6421cfc4b",
             "client-id": "e4947a81-dbc2-40de-aad8-0dd3eab591f0",
-            "message": "New Task",
-            "state": false
-        },
-        {
-            "uuid": "1a2096da-0cf2-4672-835e-76da2e209513",
-            "client-id": "e4947a81-dbc2-40de-aad8-0dd3eab591f0",
-            "message": "New Task",
-            "state": false
-        },
-        {
-            "uuid": "1c0719a0-74ca-48bd-af81-389250a284b4",
-            "client-id": "e4947a81-dbc2-40de-aad8-0dd3eab591f5",
             "message": "New Task",
             "state": false
         }

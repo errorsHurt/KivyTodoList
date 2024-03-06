@@ -1,5 +1,5 @@
 import time
-
+import json
 from kivy.uix.screenmanager import Screen
 from logic.storage.TaskStorageHandler import TaskStorageHandler
 import uuid as UUID
@@ -41,15 +41,15 @@ class MainToDoList(Screen):
 
     def sync_items(self):
         msg = self.mqtt_client.lissen()
-        print('#############')
         print(msg)
-        print('#############')
         if msg:
-            print('B')
-            TaskStorageHandler._write_data(str(msg))
-            tasks = msg.get("tasks", [])
-            self.load_tasks_in_local_list(tasks)
+            try:
+                msg = msg.replace("'", "\"").replace("True", "true").replace("False", "false")
+                data = json.loads(msg)
+                TaskStorageHandler._write_data(data)
 
+            except json.JSONDecodeError as e:
+                print("Fehler:", e)
 
     def delete_item(self, task_uuid):
         # Hier müssen wir bevor das Item gelöscht wird die Sync Funktion aufrufen und dann das Item Löschen.
@@ -57,7 +57,7 @@ class MainToDoList(Screen):
         # Somit dürfte das eigentlich kein problem darstellen.
         # Später können wir theoretisch einfach den Thread über die "sync_items" funktion rüber laufen lassen.
 
-        #MainToDoList.sync_items()
+        self.sync_items()
         TaskStorageHandler._delete_task(task_uuid)
 
         self.ids.rv.data = [item for item in self.ids.rv.data if item['id'] != task_uuid]
@@ -66,7 +66,6 @@ class MainToDoList(Screen):
         tasks = data["tasks"]
         self.load_tasks_in_local_list(tasks)
 
-        data = TaskStorageHandler._read_data()
         self.mqtt_client.publish_message(str(data), True)
 
     def edit_item(self, item_widget):
@@ -79,7 +78,7 @@ class MainToDoList(Screen):
         # 1. Das Item mit der UUID finden und in der .json auch umbenennen.
         # 2. Liste neu laden und Publicchhhen
 
-        #MainToDoList.sync_items()
+        # MainToDoList.sync_items()
         TaskStorageHandler._edit_task(self.selected_item_id, txt=self.ids.global_edit_text.text)
         data = TaskStorageHandler._read_data()
         self.mqtt_client.publish_message(str(data), True)

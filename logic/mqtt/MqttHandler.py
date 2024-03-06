@@ -9,7 +9,6 @@ from paho.mqtt import client as mqtt_client
 import ssl
 import random
 
-
 # NEW
 broker = '4757e0b60f564e78900a097c3086a003.s1.eu.hivemq.cloud'
 port = 8883
@@ -41,7 +40,7 @@ class MqttHandler:
         self.client.on_publish = self.on_publish
 
         self.client.subscribe(self.topic, qos=config.qos)
-
+        self.received_message = None  # Variable zum Speichern der empfangenen Nachricht
 
     def on_connect(self, client, userdata, flags, rc, properties=None):
         print("Connection received with code %s." % rc)
@@ -53,7 +52,6 @@ class MqttHandler:
         print("Subscribed: " + str(mid) + " [%s]" % granted_qos)
 
     def on_message(self, client, userdata, msg):
-        print('ONCONNECT')
         self.__retainedMessages.append(json.loads(msg.payload.decode("utf-8")))
         print(msg.topic + " - " + str(msg.payload))
 
@@ -85,7 +83,6 @@ class MqttHandler:
         time.sleep(0.5)
         self.client.publish(self.topic, payload="", qos=0, retain=True)
 
-
     # New
     def connect_mqtt(self):
         def on_connect(client, userdata, flags, rc):
@@ -97,22 +94,19 @@ class MqttHandler:
 
         client = mqtt_client.Client(client_id)
         client.username_pw_set(username, password)
-        
+
         # Set TLS parameters
         client.tls_set(cert_reqs=ssl.CERT_NONE, tls_version=ssl.PROTOCOL_TLS)
-        
+
         client.on_connect = on_connect
         client.connect(broker, port)
         return client
 
-
-    def on_message(self,client, userdata, msg):
-        print(f"Received message: {msg.payload.decode()}")
+    def on_message(self, client, userdata, msg):
+        # print(f"Received message: {msg.payload.decode()}")
+        self.received_message = msg.payload.decode()  # Speichern der empfangenen Nachricht
         client.disconnect()
         message_received.set()
-        print('HAAALLLOO')
-        return msg.payload.decode()
-
 
     def lissen(self):
         client = self.connect_mqtt()
@@ -121,3 +115,4 @@ class MqttHandler:
         message_received.wait()
         client.loop_stop()
         client.disconnect()
+        return self.received_message
