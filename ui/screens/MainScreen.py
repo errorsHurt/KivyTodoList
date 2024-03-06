@@ -3,6 +3,7 @@ import json
 from kivy.uix.screenmanager import Screen
 from logic.storage.TaskStorageHandler import TaskStorageHandler
 import uuid as UUID
+from ui.components.TodolistItem import ToDoListItem
 
 
 class MainToDoList(Screen):
@@ -11,17 +12,10 @@ class MainToDoList(Screen):
         super().__init__(**kw)
         self.mqtt_client = mqtt_client
 
-    def foobar(self):
-        self.mqtt_thread.start_mqtt_thread()
-        self.mqtt_thread.wait_for_mqtt_thread()
-        data = self.mqtt_client.get_retained_messages()
-
     def load_tasks_in_local_list(self, tasks):
         self.ids.rv.data = []
         for task in tasks:
-            self.ids.rv.data.append({'id': str(task["uuid"]),
-                                     'text': task["message"],
-                                     'is_done': task["state"]})
+            self.ids.rv.data.append({'id': str(task["uuid"]),'text': task["message"],'is_done': task["state"]})
 
     def add_item(self, uuid=""):
 
@@ -30,7 +24,7 @@ class MainToDoList(Screen):
 
         text = 'New Task'
         # Explicitly set `is_done` to False for new items
-        self.ids.rv.data.append({'id': str(uuid), 'text': text, 'is_done': False})
+        self.ids.rv.data.append({self.mqtt_client, uuid, text, False})
         self.ids.rv.refresh_from_data()
         # Wenn "+"
 
@@ -47,7 +41,7 @@ class MainToDoList(Screen):
                 msg = msg.replace("'", "\"").replace("True", "true").replace("False", "false")
                 data = json.loads(msg)
                 TaskStorageHandler._write_data(data)
-                self.load_tasks_in_local_list(data["tasks"])
+                self.load_tasks_in_local_list(data)
 
             except json.JSONDecodeError as e:
                 print("Fehler:", e)
@@ -79,7 +73,8 @@ class MainToDoList(Screen):
         # 1. Das Item mit der UUID finden und in der .json auch umbenennen.
         # 2. Liste neu laden und Publicchhhen
 
-        # MainToDoList.sync_items()
+        self.sync_items()
+        # Muss noch in die tasks.json geschrieben werden!
         TaskStorageHandler._edit_task(self.selected_item_id, txt=self.ids.global_edit_text.text)
         data = TaskStorageHandler._read_data()
         self.mqtt_client.publish_message(str(data), True)
