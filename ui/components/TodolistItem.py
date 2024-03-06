@@ -1,27 +1,20 @@
-import json
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import StringProperty, BooleanProperty
 from kivy.clock import Clock
 from kivy.app import App
 from kivy.properties import ObjectProperty
 
-from logic.mqtt.MqttConfig import MqttConfig
-from logic.mqtt.MqttHandler import MqttHandler
 from logic.storage.TaskStorageHandler import TaskStorageHandler
 
 
 class ToDoListItem(BoxLayout):
     checkbox = ObjectProperty(None)
-    uuid = StringProperty('')
+    id = StringProperty('')
     text = StringProperty('')
     is_done = BooleanProperty(False)  # Keeps track of whether the task is done
 
     def __init__(self, **kwargs):
         super(ToDoListItem, self).__init__(**kwargs)
-
-        self.config = MqttConfig.load_from_resource()
-        self.mqtt_client = MqttHandler(self.config)
-
         self.press_event = None
 
     def refresh_view_attrs(self, rv, index, data):
@@ -69,30 +62,12 @@ class ToDoListItem(BoxLayout):
                 if item != self:
                     item.hide_buttons()
 
-    def sync_items(self):
-        msg = self.mqtt_client.lissen()
-        print(msg)
-        if msg:
-            try:
-                msg = msg.replace("'", "\"").replace("True", "true").replace("False", "false")
-                data = json.loads(msg)
-                TaskStorageHandler._write_data(data)
-                #self.load_tasks_in_local_list(data["tasks"])
-
-            except json.JSONDecodeError as e:
-                print("Fehler:", e)
-
     def on_checkbox_change(self, checkbox, value):
-        msg = self.mqtt_client.lissen()
         for item in App.get_running_app().root.get_screen('main').ids.rv.data:
             task_uuid = item['id']
             if task_uuid == self.id:
                 item['is_done'] = value
-
-                self.sync_items()
                 TaskStorageHandler._set_task_state(task_uuid, bool(value))
-                data = TaskStorageHandler._read_data()
-                self.mqtt_client.publish_message(str(data), True)
 
     def on_data(self, *args):
         # Explicitly reset the checkbox state based on the item's data
