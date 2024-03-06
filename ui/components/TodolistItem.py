@@ -24,11 +24,6 @@ class ToDoListItem(BoxLayout):
 
         self.press_event = None
 
-    def load_tasks_in_local_list(self, tasks):
-        self.ids.rv.data = []
-        for task in tasks:
-            self.ids.rv.data.append({'id': str(task["uuid"]),'text': task["message"],'is_done': task["state"]})
-
     def refresh_view_attrs(self, rv, index, data):
         self.ids.edit_button.opacity = 0
         self.ids.edit_button.disabled = True
@@ -82,7 +77,7 @@ class ToDoListItem(BoxLayout):
                 msg = msg.replace("'", "\"").replace("True", "true").replace("False", "false")
                 data = json.loads(msg)
                 TaskStorageHandler._write_data(data)
-                self.load_tasks_in_local_list(data["tasks"])
+                #self.load_tasks_in_local_list(data["tasks"])
 
             except json.JSONDecodeError as e:
                 print("Fehler:", e)
