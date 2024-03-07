@@ -1,14 +1,19 @@
 from kivy.uix.screenmanager import Screen
-
-
+from logic.mqtt.MqttConfig import MqttConfig
 class LoginScreen(Screen):
 
-    def __init__(self, **kw):
+    def __init__(self, mqtt_client,**kw):
         super().__init__(**kw)
+        self.mqtt_client = mqtt_client
 
-    def connect(self, username_input, password_input, topic_input):
-        self.mqtt_client.client.connect(self.mqtt_client.config.broker_adress, self.mqtt_client.config.port)
+    def update_config_yaml(self, username_input, password_input, broker_adress_input, port_input, topic_input):
 
-        username = username_input
-        password = password_input
-        topic = topic_input
+        data = MqttConfig.read()
+
+        data['mqtt']['connection']['broker-adress'] = broker_adress_input
+        data['mqtt']['port'] = port_input
+        data['mqtt']['topic'] = topic_input
+        data['mqtt']['user']['username'] = username_input
+        data['mqtt']['user']['password'] = password_input
+
+        #MqttConfig.write(data)

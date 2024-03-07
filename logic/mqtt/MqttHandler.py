@@ -18,7 +18,6 @@ username = 'testtest'
 password = 'Test1234'
 message_received = threading.Event()
 
-
 class MqttHandler:
 
     def __init__(self, config: MqttConfig):

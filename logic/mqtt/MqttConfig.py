@@ -1,4 +1,5 @@
 import sys
+import uuid
 import yaml
 
 class MqttConfig:
@@ -15,29 +16,43 @@ class MqttConfig:
     @staticmethod
     def load_from_resource():
         file_path = 'resources/config.yaml'
+        data = None
+
         try:
+
             with open(file_path, 'r') as file:
                 data = yaml.safe_load(file)
 
-                mqtt_config = data['mqtt']
-                connection_config = mqtt_config['connection']
-                user_config = mqtt_config['user']
+            mqtt_config = data['mqtt']
 
-                client_id = mqtt_config['client-id']
-                broker_adress = connection_config['broker-adress']
-                port = connection_config['port']
-                topic = connection_config['topic']
-                qos = connection_config['qos']
-                username = user_config['username']
-                password = user_config['password']
+            client_id = mqtt_config['client-id']
 
-                return MqttConfig(client_id,broker_adress,port,topic,qos,username,password)
+            if client_id == "None":
+                mqtt_config['client-id'] = str(uuid.uuid4())
+                MqttConfig.write(data)
+
+            connection_config = mqtt_config['connection']
+            user_config = mqtt_config['user']
+
+            broker_adress = connection_config['broker-adress']
+            port = connection_config['port']
+            topic = connection_config['topic']
+            qos = connection_config['qos']
+            username = user_config['username']
+            password = user_config['password']
+
+            return MqttConfig(client_id,broker_adress,port,topic,qos,username,password)
 
         except Exception as e:
             print(f"Ein Fehler ist aufgetreten: {e, data}.")
             sys.exit(1)
 
     @staticmethod
-    def write_to_yaml(path, value):
-        # schreib dynamisch auf config.yaml
-        pass
+    def read():
+        with open("resources/config.yaml", 'r') as file:
+            return yaml.safe_load(file)
+
+    @staticmethod
+    def write(data):
+        with open("resources/config.yaml", 'w') as file:
+            yaml.dump(data, file)

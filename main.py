@@ -28,8 +28,9 @@ class ToDoApp(MDApp):
         self.icon = 'resources/app_icon.png'
         sm = ScreenManager()
 
+        #Generiere UUID und aktualisiere sie
         todoscreen = MainToDoList(name='main', mqtt_client=self.mqtt_client)
-        loginscreen = LoginScreen(name='login')
+        loginscreen = LoginScreen(name='login', mqtt_client=self.mqtt_client)
 
         sm.add_widget(todoscreen)
         sm.add_widget(loginscreen)
