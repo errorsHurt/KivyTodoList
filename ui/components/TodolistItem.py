@@ -11,7 +11,7 @@ class ToDoListItem(BoxLayout):
     checkbox = ObjectProperty(None)
     id = StringProperty('')
     text = StringProperty('')
-    is_done = BooleanProperty(False)  # Keeps track of whether the task is done
+    state = BooleanProperty(False)  # Keeps track of whether the task is done
 
     def __init__(self, **kwargs):
         super(ToDoListItem, self).__init__(**kwargs)
@@ -23,7 +23,7 @@ class ToDoListItem(BoxLayout):
         self.ids.delete_button.opacity = 0
         self.ids.delete_button.disabled = True
         # Ensure checkbox state is set according to the data
-        self.ids.checkbox.active = data.get('is_done', False)
+        self.ids.checkbox.active = data.get('state', False)
         return super(ToDoListItem, self).refresh_view_attrs(rv, index, data)
 
     def on_touch_down(self, touch):
@@ -66,9 +66,9 @@ class ToDoListItem(BoxLayout):
         for item in App.get_running_app().root.get_screen('main').ids.rv.data:
             task_uuid = item['id']
             if task_uuid == self.id:
-                item['is_done'] = value
+                item['state'] = value
                 TaskStorageHandler._set_task_state(task_uuid, bool(value))
 
     def on_data(self, *args):
         # Explicitly reset the checkbox state based on the item's data
-        self.ids.checkbox.active = self.is_done
+        self.ids.checkbox.active = self.state

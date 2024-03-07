@@ -108,6 +108,7 @@ class MqttHandler:
         message_received.set()
 
     def lissen(self):
+        message_received.clear()
         client = self.connect_mqtt()
         client.on_message = self.on_message
         client.loop_start()

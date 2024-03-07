@@ -11,17 +11,12 @@ class MainToDoList(Screen):
         super().__init__(**kw)
         self.mqtt_client = mqtt_client
 
-    def foobar(self):
-        self.mqtt_thread.start_mqtt_thread()
-        self.mqtt_thread.wait_for_mqtt_thread()
-        data = self.mqtt_client.get_retained_messages()
-
     def load_tasks_in_local_list(self, tasks):
         self.ids.rv.data = []
         for task in tasks:
             self.ids.rv.data.append({'id': str(task["uuid"]),
                                      'text': task["message"],
-                                     'is_done': task["state"]})
+                                     'state': task["state"]})
 
     def add_item(self, uuid=""):
 
@@ -29,8 +24,8 @@ class MainToDoList(Screen):
             uuid = UUID.uuid4()  # Generate a unique ID
 
         text = 'New Task'
-        # Explicitly set `is_done` to False for new items
-        self.ids.rv.data.append({'id': str(uuid), 'text': text, 'is_done': False})
+        # Explicitly set `state` to False for new items
+        self.ids.rv.data.append({'id': str(uuid), 'text': text, 'state': False})
         self.ids.rv.refresh_from_data()
         # Wenn "+"
 

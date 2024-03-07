@@ -1,20 +1,13 @@
 {
     "tasks": [
         {
-            "uuid": "0d698c50-4759-4750-920d-719319491816",
-            "client-id": "e4947a81-dbc2-40de-aad8-0dd3eab591f5",
-            "message": "New Task",
-            "state": true,
-            "is_done": true
-        },
-        {
-            "uuid": "b2868e2a-7195-4e85-a312-fe36336b4218",
+            "uuid": "cfab2202-7b7a-420a-98cb-97d1882f4a49",
             "client-id": "e4947a81-dbc2-40de-aad8-0dd3eab591f5",
             "message": "New Task",
             "state": false
         },
         {
-            "uuid": "026fcbe6-3261-4d3e-a425-e10f35ba3128",
+            "uuid": "0d88858d-28db-4ea4-9121-4d8e5a857b4f",
             "client-id": "e4947a81-dbc2-40de-aad8-0dd3eab591f5",
             "message": "New Task",
             "state": false
