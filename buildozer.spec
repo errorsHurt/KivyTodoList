@@ -6,10 +6,10 @@ package.domain = gsog.de
 
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas,mp3
-#icon.filename = logo.png
-#presplash.filename = logo.png
+icon.filename = ./resources/app_icon.png
+presplash.filename = ./resources/app_icon.png
 version = 0.1
-requirements = python3,kivy==2.2.0,requests,kivymd,plyer,chardet,charset_normalizer,urllib3,idna
+requirements = python3,kivy==2.2.0,requests,kivymd,plyer,chardet,charset_normalizer,urllib3,idna,paho
 
 orientation = portrait
 fullscreen = 0
