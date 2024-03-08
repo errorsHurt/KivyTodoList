@@ -13,7 +13,7 @@ from ui.screens.SettingScreen import LoginScreen
 from ui.components.TodolistItem import ToDoListItem
 from ui.components.NavigationBar import NavBar
 
-Window.size = (310, 580)
+
 
 
 class ToDoApp(MDApp):
