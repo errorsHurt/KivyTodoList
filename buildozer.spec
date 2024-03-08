@@ -9,7 +9,7 @@ source.include_exts = py,png,jpg,kv,atlas,mp3,json,yaml
 icon.filename = ./resources/app_icon.png
 presplash.filename = ./resources/app_icon.png
 version = 0.1
-requirements = python3,kivy==2.2.0,kivymd,paho-mqtt<2.0.0,pyyaml
+requirements = python3,kivy==2.2.0,kivymd,urllib3,paho-mqtt<2.0.0,pyyaml
 
 orientation = portrait
 fullscreen = 0
