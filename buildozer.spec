@@ -5,7 +5,7 @@ package.name = TodoApp
 package.domain = gsog.de
 
 source.dir = .
-source.include_exts = py,png,jpg,kv,atlas,mp3
+source.include_exts = py,png,jpg,kv,atlas,mp3,json,yaml
 icon.filename = ./resources/app_icon.png
 presplash.filename = ./resources/app_icon.png
 version = 0.1
