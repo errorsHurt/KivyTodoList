@@ -4,6 +4,8 @@ from kivy.uix.screenmanager import Screen
 from logic.storage.TaskStorageHandler import TaskStorageHandler
 import uuid as UUID
 
+from ui.components.TodolistItem import ToDoListItem
+
 
 class MainToDoList(Screen):
 
@@ -12,11 +14,11 @@ class MainToDoList(Screen):
         self.mqtt_client = mqtt_client
 
     def load_tasks_in_local_list(self, tasks):
-        self.ids.rv.data = []
+        data = []
         for task in tasks:
-            self.ids.rv.data.append({'id': str(task["uuid"]),
-                                     'text': task["message"],
-                                     'state': task["state"]})
+            item = {'id': str(task["uuid"]), 'text': task["message"], 'state': task["state"]}
+            data.append(item)
+        self.ids.rv.data = data
 
     def add_item(self, uuid=""):
 
@@ -24,13 +26,14 @@ class MainToDoList(Screen):
             uuid = UUID.uuid4()  # Generate a unique ID
 
         text = 'New Task'
-        # Explicitly set `state` to False for new items
-        self.ids.rv.data.append({'id': str(uuid), 'text': text, 'state': False})
-        self.ids.rv.refresh_from_data()
-        # Wenn "+"
+        new_item = {'id': uuid, 'text': text, 'state': False}
 
+        # Füge das neue Element der bestehenden Datenliste hinzu
+        self.ids.rv.data.append(new_item)
+        self.ids.rv.refresh_from_data()
+
+        # Speichern der Aufgabe in der Speicherklasse und Aktualisieren der Daten
         TaskStorageHandler._add_task(str(self.mqtt_client.config.client_id), text)
-        # MainToDoList.sync_items()
         data = TaskStorageHandler._read_data()
         self.mqtt_client.publish_message(data, True)
 
@@ -95,7 +98,6 @@ class MainToDoList(Screen):
         self.ids.global_edit_text.opacity = 0
         self.ids.global_edit_text.disabled = True
         self.selected_item_id = None
-        print("Hallo")
 
 
 

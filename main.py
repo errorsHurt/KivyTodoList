@@ -13,7 +13,7 @@ from ui.screens.SettingScreen import LoginScreen
 from ui.components.TodolistItem import ToDoListItem
 from ui.components.NavigationBar import NavBar
 
-Window.size = (310, 580)
+
 
 
 class ToDoApp(MDApp):
@@ -37,7 +37,6 @@ class ToDoApp(MDApp):
 
         data = TaskStorageHandler._read_data()
         tasks = data["tasks"]
-        print('Hallo1111')
         todoscreen.load_tasks_in_local_list(tasks)
         return sm
 

@@ -5,16 +5,17 @@ package.name = TodoApp
 package.domain = gsog.de
 
 source.dir = .
-source.include_exts = py,png,jpg,kv,atlas,mp3
+source.include_exts = py,png,jpg,kv,atlas,mp3,json,yaml
 #icon.filename = logo.png
 #presplash.filename = logo.png
 version = 0.1
-requirements = python3,kivy==2.2.0,requests,kivymd,plyer,chardet,charset_normalizer,urllib3,idna
+requirements = python3,kivy==2.2.0,kivymd,urllib3,paho-mqtt<2.0.0,pyyaml
 
 orientation = portrait
 fullscreen = 0
 android.archs = arm64-v8a
 p4a.branch = release-2022.12.20
+android-permissions = INTERNET
 
 # iOS specific
 ios.kivy_ios_url = https://github.com/kivy/kivy-ios

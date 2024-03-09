@@ -1,10 +1,15 @@
 import json
 import uuid
 
+from logic.mqtt.MqttConfig import MqttConfig
+from logic.mqtt.MqttHandler import MqttHandler
+
 #tasks_data_path = "../tasks.json"
 # Das hier MUSS so angegeben werden
 tasks_data_path = "resources/tasks.json"
 
+mqtt_config = MqttConfig.load_from_resource()
+mqtt_client = MqttHandler(mqtt_config)
 
 class TaskStorageHandler:
 
@@ -33,6 +38,8 @@ class TaskStorageHandler:
                             json.dump(data, write_file, indent=4)
                             write_file.close()
                 read_file.close()
+
+                mqtt_client.publish_message(data, True)
 
 
         except Exception as e:

@@ -1,6 +1,9 @@
+import json
 import sys
 import uuid
-import yaml
+
+config_file_path = "resources/config.json"
+
 
 class MqttConfig:
 
@@ -15,13 +18,11 @@ class MqttConfig:
 
     @staticmethod
     def load_from_resource():
-        file_path = 'resources/config.yaml'
         data = None
 
         try:
-
-            with open(file_path, 'r') as file:
-                data = yaml.safe_load(file)
+            with open(config_file_path, 'r') as file:
+                data = json.load(file)
 
             mqtt_config = data['mqtt']
 
@@ -41,7 +42,7 @@ class MqttConfig:
             username = user_config['username']
             password = user_config['password']
 
-            return MqttConfig(client_id,broker_adress,port,topic,qos,username,password)
+            return MqttConfig(client_id, broker_adress, port, topic, qos, username, password)
 
         except Exception as e:
             print(f"Ein Fehler ist aufgetreten: {e, data}.")
@@ -49,10 +50,10 @@ class MqttConfig:
 
     @staticmethod
     def read():
-        with open("resources/config.yaml", 'r') as file:
-            return yaml.safe_load(file)
+        with open(config_file_path, 'r') as file:
+            return json.load(file)
 
     @staticmethod
     def write(data):
-        with open("resources/config.yaml", 'w') as file:
-            yaml.dump(data, file)
+        with open(config_file_path, 'w') as file:
+            json.dump(data, file, indent=2)

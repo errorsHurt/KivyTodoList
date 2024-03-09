@@ -63,11 +63,17 @@ class ToDoListItem(BoxLayout):
                     item.hide_buttons()
 
     def on_checkbox_change(self, checkbox, value):
+        item_uuid = None
         for item in App.get_running_app().root.get_screen('main').ids.rv.data:
             task_uuid = item['id']
             if task_uuid == self.id:
-                item['state'] = value
-                TaskStorageHandler._set_task_state(task_uuid, bool(value))
+                item_uuid = item['id']
+
+        if item_uuid:
+            print(item_uuid, str(checkbox.active))
+            TaskStorageHandler._set_task_state(item_uuid, bool(checkbox.active))
+        else:
+            print("Ein Fehler ist aufgetreten. Der Checkbox Status konnte nicht aktualisiert werden.")
 
     def on_data(self, *args):
         # Explicitly reset the checkbox state based on the item's data

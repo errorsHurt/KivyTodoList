@@ -174,7 +174,7 @@
                 text: 'Connect'
                 size_hint_y: None
                 height: 50
-                on_release: app.root.get_screen('login').update_config_yaml(username_input, password_input, broker_adress_input, port_input, topic_input)
+                on_release: app.root.get_screen('login').update_config_yaml(username_input.text, password_input.text, broker_adress_input.text, port_input.text, topic_input.text)
 
 
         Widget:
