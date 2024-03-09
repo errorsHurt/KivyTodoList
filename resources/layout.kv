@@ -3,42 +3,87 @@
     size_hint_y: None
     height: 48
     orientation: 'horizontal'
-    padding: [20, 0, 0, 0]
+    padding: [20, 0, 0, 5]
+
     canvas.before:
         Color:
-            rgba: 1, 1, 1, 1  # Black color
+            rgba: 0.596, 0.984, 0.596, 1
+        Line:
+            rectangle: self.x+1, self.y+1, self.width-2, self.height-2
+            width: 1.25
         Rectangle:
             pos: self.pos
             size: self.size
-    CheckBox:
+
+    MDCheckbox:
         id: checkbox
         active: root.state
         size_hint: None, None
         size: 24, 24
-        pos_hint: {'center_y': 0.5, 'x': 0.5}  # Adjust 'x' for left spacing
+        active_color: 0.058, 0.615, 0.345, 1
+        inactive_color: 0.501, 0.501, 0.501, 1
+        pos_hint: {'center_y': 0.5, 'x': 0.5}
         on_active: root.on_checkbox_change(*args)
+
     Label:
         id: task_label
         text: root.text
         color: 0, 0, 0, 1
-    Button:
-        id: edit_button
-        text: 'Edit'
-        size_hint_x: 0.2
-        opacity: 0
-        disabled: True
-        on_release: app.root.get_screen('main').edit_item(root)
-    Button:
-        id: delete_button
-        text: 'Delete'
-        size_hint_x: 0.2
-        opacity: 0
-        disabled: True
-        on_release: app.root.get_screen('main').delete_item(root.id)
+        padding: [5, 0, 0, 12]
+        size_hint_y: None
+        height: 24  # Adjust as needed for the label
+        width: 200
+        text_size: self.width - 10,None  # Adjust text width with padding
+
+    Widget:
+        size_hint_y: None
+        width: 10
+
+
+    BoxLayout:
+        orientation: 'horizontal'
+        size_hint_y: None
+        height: 30  # Adjust as needed for buttons
+        padding: [0, 0, 0, 2]  # Adjust padding as needed
+        spacing: 3  # Space between buttons
+        MDRaisedButton:
+            id: edit_button
+            text: 'Edit'
+            text_color: 0, 0, 0, 1
+            md_bg_color: 0.596, 0.984, 0.596, 1
+            height: root.height*0.5
+            width: root.width*0.12
+            size_hint: None, None
+            opacity: 0
+            disabled: True
+            on_release: app.root.get_screen('main').edit_item(root)
+
+        MDRaisedButton:
+            id: delete_button
+            text: 'Delete'
+            text_color: 0, 0, 0, 1
+            md_bg_color: 0.596, 0.984, 0.596, 1
+            height: root.height*0.5
+            width: root.width*0.18
+            size_hint: None, None
+            opacity: 0
+            disabled: True
+            on_release: app.root.get_screen('main').delete_item(root.id)
+
+
+
+
+
 
 <MainToDoList>:
     name: 'main'
     orientation: 'vertical'
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            size: self.size
+            pos: self.pos
     BoxLayout:
         size_hint_y: None
         padding: [20, 20, 20, 20]
@@ -56,42 +101,65 @@
             size_hint_y: None
             height: self.minimum_height
             orientation: 'vertical'
-
+            spacing: dp(3)
 
     BoxLayout:
-        size_hint_y: 0.1
+        size_hint_y: 0.3
         orientation: 'horizontal'
-        Button:
-            text: 'Settings'
-            size_hint: None, None
-            size: dp(60), dp(60)
-            on_release: app.root.current = 'login'
-
         TextInput:
             id: global_edit_text
-            size_hint_y: 0.1
             multiline: False
             opacity: 0
             disabled: True
             on_text_validate: root.apply_global_edit()
 
-        Button:
-            text: '+'
+    BoxLayout:
+        size_hint_y: 0.1
+        orientation: 'horizontal'
+        MDRaisedButton:
+            text: 'Settings'
+            text_color: 0, 0, 0, 1
             size_hint: None, None
-            size: dp(60), dp(60)
+            height: root.height*0.1
+            width: root.width*0.3
             pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            md_bg_color: 0.596, 0.984, 0.596, 1
+            opacity: 1
+            disabled: False
+            on_release: app.root.current = 'login'
+
+        Widget:
+            size_hint_y: None
+            width: 20
+
+        MDFloatingActionButton:
+            text: '⟳'
+            text_color: 0, 0, 0, 1
+            size_hint: None, None
+            height: root.height*0.075
+            width: root.width*0.125
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            md_bg_color: 0.596, 0.984, 0.596, 1
+            on_release: root.sync_items()
+            opacity: 1
+            disabled: False
+
+        Widget:
+            size_hint_y: None
+            width: 20
+
+        MDRaisedButton:
+            text: '+'
+            text_color: 0, 0, 0, 1
+            size_hint: None, None
+            height: root.height*0.1
+            width: root.width*0.3
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            md_bg_color: 0.596, 0.984, 0.596, 1
             on_release: root.add_item()
             opacity: 1
             disabled: False
 
-        Button:
-            text: '⟳'
-            size_hint: None, None
-            size: dp(60), dp(60)
-            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-            on_release: root.sync_items()
-            opacity: 1
-            disabled: False
 
 <LoginScreen>:
     name: 'login'
@@ -135,26 +203,18 @@
                 padding_y: (10, 10)
 
             TextInput:
-                id: broker_adress_input
-                hint_text: 'Broker Adress'
+                id: server_input
+                hint_text: 'Server'
                 size_hint_y: None
                 height: 40
                 padding_y: (10, 10)
 
             TextInput:
-                id: port_input
-                hint_text: 'Port'
+                id: server_input
+                hint_text: 'Server'
                 size_hint_y: None
                 height: 40
                 padding_y: (10, 10)
-
-            TextInput:
-                id: topic_input
-                hint_text: 'Topich'
-                size_hint_y: None
-                height: 40
-                padding_y: (10, 10)
-
 
         Widget:
             # Another flexible spacer, can adjust height as needed
@@ -170,11 +230,13 @@
             padding: [20, 20, 20, 20]
             spacing: 10
 
-            Button:
+            MDRaisedButton:
                 text: 'Connect'
-                size_hint_y: None
-                height: 50
-                on_release: app.root.get_screen('login').update_config_yaml(username_input.text, password_input.text, broker_adress_input.text, port_input.text, topic_input.text)
+                text_color: 0, 0, 0, 1
+                size_hint: None, None
+                height: root.height*0.1
+                width: root.width*0.87
+                md_bg_color: 0.596, 0.984, 0.596, 1
 
 
         Widget:
@@ -185,9 +247,12 @@
         BoxLayout:
             size_hint_y: 0.0
             orientation: 'horizontal'
-            Button:
+            MDRaisedButton:
                 text: 'Back'
+                text_color: 0, 0, 0, 1
                 size_hint: None, None
-                size: dp(60), dp(60)
+                height: root.height*0.1
+                width: root.width*0.3
+                md_bg_color: 0.596, 0.984, 0.596, 1
                 on_release: app.root.current = 'main'
 
