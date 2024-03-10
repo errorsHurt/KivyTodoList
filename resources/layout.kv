@@ -1,7 +1,7 @@
 
 <ToDoListItem>:
     size_hint_y: None
-    height: 48
+    height: 40
     orientation: 'horizontal'
     padding: [20, 0, 0, 5]
 
@@ -203,15 +203,22 @@
                 padding_y: (10, 10)
 
             TextInput:
-                id: server_input
-                hint_text: 'Server'
+                id: broker_adress
+                hint_text: 'Broker Adresse'
                 size_hint_y: None
                 height: 40
                 padding_y: (10, 10)
 
             TextInput:
-                id: server_input
-                hint_text: 'Server'
+                id: port_input
+                hint_text: 'Port'
+                size_hint_y: None
+                height: 40
+                padding_y: (10, 10)
+
+            TextInput:
+                id: topic_input
+                hint_text: 'Topic'
                 size_hint_y: None
                 height: 40
                 padding_y: (10, 10)
@@ -237,6 +244,7 @@
                 height: root.height*0.1
                 width: root.width*0.87
                 md_bg_color: 0.596, 0.984, 0.596, 1
+                on_release: root.update_config_yaml(username_input, password_input, broker_adress, port_input, topic_input)
 
 
         Widget:

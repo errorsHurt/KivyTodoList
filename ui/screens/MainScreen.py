@@ -21,18 +21,15 @@ class MainToDoList(Screen):
         self.ids.rv.data = data
 
     def add_item(self, uuid=""):
-
         if uuid == "":
-            uuid = UUID.uuid4()  # Generate a unique ID
+            # Das hier hatte gefehlt
+            # Hatten nen falschen Datentyp
+            uuid = str(UUID.uuid4())
 
         text = 'New Task'
         new_item = {'id': uuid, 'text': text, 'state': False}
-
-        # Füge das neue Element der bestehenden Datenliste hinzu
         self.ids.rv.data.append(new_item)
         self.ids.rv.refresh_from_data()
-
-        # Speichern der Aufgabe in der Speicherklasse und Aktualisieren der Daten
         TaskStorageHandler._add_task(str(self.mqtt_client.config.client_id), text)
         data = TaskStorageHandler._read_data()
         self.mqtt_client.publish_message(data, True)

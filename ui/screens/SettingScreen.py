@@ -1,6 +1,9 @@
 from kivy.uix.screenmanager import Screen
 from logic.mqtt.MqttConfig import MqttConfig
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.button import MDFlatButton
 import re
+import sys
 class LoginScreen(Screen):
 
     def __init__(self, mqtt_client,**kw):
@@ -9,8 +12,6 @@ class LoginScreen(Screen):
 
 
     def is_valid(self, username, password, broker_adress, port, topic):
-        # Validierung implementieren
-        # Checke ob es leer ist
         if not (username and password and broker_adress and port and topic):
             return False
         # broker port
@@ -24,6 +25,11 @@ class LoginScreen(Screen):
         return True
 
     def update_config_yaml(self, username_input, password_input, broker_adress_input, port_input, topic_input):
+        username_input = username_input.text
+        password_input = password_input.text
+        broker_adress_input = broker_adress_input.text
+        port_input = port_input.text
+        topic_input = topic_input.text
         print(self.is_valid(username_input, password_input, broker_adress_input, port_input, topic_input))
 
         if self.is_valid(username_input, password_input, broker_adress_input, port_input, topic_input):
@@ -45,7 +51,25 @@ class LoginScreen(Screen):
             }
 
             MqttConfig.write(mqtt_config)
-
+            self.show_shutdown_dialog()
         else:
             print("Es stehen keine Configs bereit")
 
+    def show_shutdown_dialog(self):
+        # Ensure only one instance of the dialog is created
+        if not hasattr(self, 'shutdown_dialog'):
+            self.shutdown_dialog = MDDialog(
+                title="Neustart Benachrichtung",
+                text="Bitte starten sie die App neu.",
+                buttons=[
+                    MDFlatButton(
+                        text="Okay",
+                        on_release=self.shutdown_app
+                    ),
+                ],
+            )
+        self.shutdown_dialog.open()
+
+    def shutdown_app(self, *args):
+        self.shutdown_dialog.dismiss()
+        sys.exit()
