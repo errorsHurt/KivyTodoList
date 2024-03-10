@@ -1,0 +1,193 @@
+
+<ToDoListItem>:
+    size_hint_y: None
+    height: 48
+    orientation: 'horizontal'
+    padding: [20, 0, 0, 0]
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1  # Black color
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    CheckBox:
+        id: checkbox
+        active: root.state
+        size_hint: None, None
+        size: 24, 24
+        pos_hint: {'center_y': 0.5, 'x': 0.5}  # Adjust 'x' for left spacing
+        on_active: root.on_checkbox_change(*args)
+    Label:
+        id: task_label
+        text: root.text
+        color: 0, 0, 0, 1
+    Button:
+        id: edit_button
+        text: 'Edit'
+        size_hint_x: 0.2
+        opacity: 0
+        disabled: True
+        on_release: app.root.get_screen('main').edit_item(root)
+    Button:
+        id: delete_button
+        text: 'Delete'
+        size_hint_x: 0.2
+        opacity: 0
+        disabled: True
+        on_release: app.root.get_screen('main').delete_item(root.id)
+
+<MainToDoList>:
+    name: 'main'
+    orientation: 'vertical'
+    BoxLayout:
+        size_hint_y: None
+        padding: [20, 20, 20, 20]
+        height: 50
+        spacing: 10
+        padding: 10
+
+
+    RecycleView:
+        id: rv
+        viewclass: 'ToDoListItem'
+        RecycleBoxLayout:
+            default_size: None, dp(48)
+            default_size_hint: 1, None
+            size_hint_y: None
+            height: self.minimum_height
+            orientation: 'vertical'
+
+
+    BoxLayout:
+        size_hint_y: 0.1
+        orientation: 'horizontal'
+        Button:
+            text: 'Settings'
+            size_hint: None, None
+            size: dp(60), dp(60)
+            on_release: app.root.current = 'login'
+
+        TextInput:
+            id: global_edit_text
+            size_hint_y: 0.1
+            multiline: False
+            opacity: 0
+            disabled: True
+            on_text_validate: root.apply_global_edit()
+
+        Button:
+            text: '+'
+            size_hint: None, None
+            size: dp(60), dp(60)
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            on_release: root.add_item()
+            opacity: 1
+            disabled: False
+
+        Button:
+            text: '⟳'
+            size_hint: None, None
+            size: dp(60), dp(60)
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+            on_release: root.sync_items()
+            opacity: 1
+            disabled: False
+
+<LoginScreen>:
+    name: 'login'
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 20  # Space between the label and the nested BoxLayout
+
+        Label:
+            text: 'Login'
+            size_hint_y: None
+            height: 50
+            font_size: '20sp'
+
+        Widget:
+            # This widget acts as a flexible spacer
+            size_hint_y: None
+            height: 20  # Adjust this value to manage the space above the login form
+
+        # Inner BoxLayout for the login widgets
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None  # Allow the BoxLayout to grow based on its content
+            height: self.minimum_height  # Calculate height based on the content
+            pos_hint: {'center_y': .5}  # Center this layout in the vertical space
+            padding: [20, 20, 20, 20]  # Padding around the edges of the BoxLayout
+            spacing: 10
+
+            TextInput:
+                id: username_input
+                hint_text: 'Username'
+                size_hint_y: None
+                height: 40
+                padding_y: (10, 10)
+
+            TextInput:
+                id: password_input
+                hint_text: 'Password'
+                password: True
+                size_hint_y: None
+                height: 40
+                padding_y: (10, 10)
+
+            TextInput:
+                id: broker_adress_input
+                hint_text: 'Broker Adress'
+                size_hint_y: None
+                height: 40
+                padding_y: (10, 10)
+
+            TextInput:
+                id: port_input
+                hint_text: 'Port'
+                size_hint_y: None
+                height: 40
+                padding_y: (10, 10)
+
+            TextInput:
+                id: topic_input
+                hint_text: 'Topich'
+                size_hint_y: None
+                height: 40
+                padding_y: (10, 10)
+
+
+        Widget:
+            # Another flexible spacer, can adjust height as needed
+            size_hint_y: None
+            height: 20
+
+
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint_y: None  # Allow the BoxLayout to grow based on its content
+            height: self.minimum_height  # Calculate height based on the content
+            pos_hint: {'center_y': .5}  # Center this layout in the vertical space
+            padding: [20, 20, 20, 20]
+            spacing: 10
+
+            Button:
+                text: 'Connect'
+                size_hint_y: None
+                height: 50
+                on_release: app.root.get_screen('login').update_config_yaml(username_input.text, password_input.text, broker_adress_input.text, port_input.text, topic_input.text)
+
+
+        Widget:
+            # Another flexible spacer, can adjust height as needed
+            size_hint_y: None
+            height: 20  # Adjust this value to manage the space below the login form
+
+        BoxLayout:
+            size_hint_y: 0.0
+            orientation: 'horizontal'
+            Button:
+                text: 'Back'
+                size_hint: None, None
+                size: dp(60), dp(60)
+                on_release: app.root.current = 'main'
+
