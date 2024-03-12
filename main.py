@@ -11,7 +11,7 @@ from ui.screens.SettingScreen import LoginScreen
 
 # Die zwei Statements müssen drin bleiben, das sonst
 from ui.components.TodolistItem import ToDoListItem
-from ui.components.NavigationBar import NavBar
+from ui.components.NavigationBar import NavigationBar
 
 
 
