@@ -6,8 +6,8 @@ package.domain = gsog.de
 
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas,mp3,json,yaml
-#icon.filename = logo.png
-#presplash.filename = logo.png
+icon.filename = app_icon.png
+presplash.filename = app_icon.png
 version = 0.1
 requirements = python3,kivy==2.2.0,kivymd,urllib3,paho-mqtt==1.6.1,pyyaml
 
