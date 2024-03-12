@@ -9,17 +9,13 @@ import ssl
 import random
 
 # NEW
-#broker = '4757e0b60f564e78900a097c3086a003.s1.eu.hivemq.cloud'
-#port = 8883
-
-broker = 'broker.hivemq.com'
-port = 1883
-
+broker = '4757e0b60f564e78900a097c3086a003.s1.eu.hivemq.cloud'
+port = 8883
 topic = "todoapp/tasks"
 # generate client ID with sub prefix randomly
 client_id = f'python-mqtt-sub-{random.randint(0, 1000)}'
-#username = 'testtest'
-#password = 'Test1234'
+username = 'testtest'
+password = 'Test1234'
 message_received = threading.Event()
 
 class MqttHandler:
@@ -34,8 +30,8 @@ class MqttHandler:
         self.client = paho.Client(client_id=config.client_id, userdata=None, protocol=paho.MQTTv5)
         self.client.on_connect = self.on_connect
 
-        #self.client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
-        #self.client.username_pw_set(config.username, config.password)
+        self.client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
+        self.client.username_pw_set(config.username, config.password)
 
         self.client.on_subscribe = self.on_subscribe
         self.client.on_message = self.on_message
@@ -95,10 +91,10 @@ class MqttHandler:
                 print("Failed to connect, return code %d\n", rc)
 
         client = mqtt_client.Client(client_id)
-        #client.username_pw_set(username, password)
+        client.username_pw_set(username, password)
 
         # Set TLS parameters
-        #client.tls_set(cert_reqs=ssl.CERT_NONE, tls_version=ssl.PROTOCOL_TLS)
+        client.tls_set(cert_reqs=ssl.CERT_NONE, tls_version=ssl.PROTOCOL_TLS)
 
         client.on_connect = on_connect
         client.connect(broker, port)

@@ -22,19 +22,25 @@
             "uuid": "1ee22b15-741b-4286-9b88-c6874a198c9b",
             "client-id": "e4947a81-dbc2-40de-aad8-0dd3eab591f5",
             "message": "Hallo",
-            "state": true
+            "state": false
         },
         {
             "uuid": "d9c2e69e-4656-4655-adfc-14148f9dcf06",
             "client-id": "703601b0-cc92-4826-b06a-2fe3d034b502",
             "message": "New Task",
-            "state": false
+            "state": true
         },
         {
             "uuid": "6a92c281-0f97-4b3c-b491-e41c82bacd7f",
             "client-id": "703601b0-cc92-4826-b06a-2fe3d034b502",
             "message": "New Task",
-            "state": false
+            "state": true
+        },
+        {
+            "uuid": "9d30fddb-d107-4b93-932a-22d36ee7f416",
+            "client-id": "703601b0-cc92-4826-b06a-2fe3d034b502",
+            "message": "New Task",
+            "state": true
         }
     ]
 }
