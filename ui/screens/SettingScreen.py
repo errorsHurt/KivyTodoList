@@ -39,13 +39,13 @@ class LoginScreen(Screen):
                     "client-id": "703601b0-cc92-4826-b06a-2fe3d034b502",
                     "connection": {
                         "broker-adress": broker_adress_input,
-                        "port": port_input,
+                        "port": int(port_input),
                         "qos": 1,
                         "topic": topic_input
                     },
                     "user": {
-                        "password": username_input,
-                        "username": password_input
+                        "username": username_input,
+                        "password": password_input
                     }
                 }
             }
