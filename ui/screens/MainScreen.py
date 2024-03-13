@@ -77,7 +77,7 @@ class MainScreen(Screen):
 
         self.ids.rv.refresh_from_data()
         # Clear and hide the global TextInput
-        TaskStorageHandler._edit_task(self.selected_item_id, txt=self.ids.global_edit_text.text)
+        TaskStorageHandler._set_task_text(self.selected_item_id, text=self.ids.global_edit_text.text)
         time.sleep(1)
         data = TaskStorageHandler._read_data()
         self.mqtt_client.publish_message(data, True)
