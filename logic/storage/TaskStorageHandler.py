@@ -76,7 +76,6 @@ class TaskStorageHandler:
     def _write_data(data):
         with open(tasks_data_path, "w") as file:
             json.dump(data, file, indent=4)
-            file.close()
 
     @staticmethod
     def _delete_task(task_uuid):

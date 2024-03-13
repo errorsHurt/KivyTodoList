@@ -3,47 +3,17 @@
         {
             "uuid": "cfab2202-7b7a-420a-98cb-97d1882f4a49",
             "client-id": "e4947a81-dbc2-40de-aad8-0dd3eab591f5",
-            "message": "New Task",
+            "message": "Das ist ein Editiertest",
             "state": true
         },
         {
-            "uuid": "d84ab96a-7053-47bb-8e3b-812a86293cca",
+            "uuid": "eac5e25d-b91b-4167-b479-33cc72bdf502",
             "client-id": "703601b0-cc92-4826-b06a-2fe3d034b502",
-            "message": "Hallo",
-            "state": true
-        },
-        {
-            "uuid": "02c410f0-5be1-4a0d-95b3-381937b730d3",
-            "client-id": "703601b0-cc92-4826-b06a-2fe3d034b502",
-            "message": "New Task",
+            "message": "3333",
             "state": false
         },
         {
-            "uuid": "b729d1bc-2498-4795-9a59-5f6b97f1ba49",
-            "client-id": "703601b0-cc92-4826-b06a-2fe3d034b502",
-            "message": "New Task",
-            "state": false
-        },
-        {
-            "uuid": "13763e25-421d-4f68-a3a1-6267fdcb6e01",
-            "client-id": "703601b0-cc92-4826-b06a-2fe3d034b502",
-            "message": "New Task",
-            "state": false
-        },
-        {
-            "uuid": "c4d05e12-7075-4370-a983-0b3b74774b8f",
-            "client-id": "703601b0-cc92-4826-b06a-2fe3d034b502",
-            "message": "Das ist ein Test",
-            "state": false
-        },
-        {
-            "uuid": "2b089ddc-a9be-41be-87bf-c59b08085c6e",
-            "client-id": "703601b0-cc92-4826-b06a-2fe3d034b502",
-            "message": "New Task",
-            "state": false
-        },
-        {
-            "uuid": "b085f282-7129-418a-b5a5-c1f711a58890",
+            "uuid": "814f788c-41d1-4354-bbe4-6eff01e3557f",
             "client-id": "703601b0-cc92-4826-b06a-2fe3d034b502",
             "message": "New Task",
             "state": false

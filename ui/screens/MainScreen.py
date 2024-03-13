@@ -33,17 +33,17 @@ class MainScreen(Screen):
         self.mqtt_client.publish_message(data, True)
 
     def sync_items(self):
-        data = self.mqtt_client.lissen()
-        print(data)
-        if data:
+        data = self.mqtt_client.get_retained_messages()
+        if data[0]:
             try:
-                data = data.replace("'", "\"").replace("True", "true").replace("False", "false")
-                data = json.loads(data)
+                data = json.loads(data[0].replace("'", "\"").replace("True", "true").replace("False", "false"))
                 TaskStorageHandler._write_data(data)
                 self.load_tasks_in_local_list(data["tasks"])
 
             except json.JSONDecodeError as e:
-                print("Fehler:", e)
+                print("Fehler beim Decodieren der empfangenen Daten:", e)
+        else:
+            print("Fehler, das hat nicht funktioniert", data)
 
     def delete_item(self, task_uuid):
 
@@ -65,7 +65,7 @@ class MainScreen(Screen):
         self.ids.global_edit_text.opacity = 1
         self.ids.global_edit_text.focus = True
 
-        #self.sync_items()
+        # self.sync_items()
 
     def apply_global_edit(self):
         new_text = self.ids.global_edit_text.text
@@ -80,13 +80,10 @@ class MainScreen(Screen):
         TaskStorageHandler._set_task_text(self.selected_item_id, text=self.ids.global_edit_text.text)
         time.sleep(1)
         data = TaskStorageHandler._read_data()
+        print(data)
         self.mqtt_client.publish_message(data, True)
 
         self.ids.global_edit_text.text = ''
         self.ids.global_edit_text.opacity = 0
         self.ids.global_edit_text.disabled = True
         self.selected_item_id = None
-
-
-
-

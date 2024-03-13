@@ -1,6 +1,5 @@
 from kivymd.app import MDApp
 from kivy.lang import Builder
-from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager
 from logic.storage.TaskStorageHandler import TaskStorageHandler
 from logic.mqtt.MqttHandler import MqttHandler
@@ -12,8 +11,6 @@ from ui.screens.SettingScreen import LoginScreen
 # Die zwei Statements müssen drin bleiben, das sonst
 from ui.components.TodolistItem import ToDoListItem
 from ui.components.NavigationBar import NavigationBar
-
-
 
 
 class ToDoApp(MDApp):
