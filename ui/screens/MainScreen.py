@@ -4,8 +4,6 @@ from kivy.uix.screenmanager import Screen
 from logic.storage.TaskStorageHandler import TaskStorageHandler
 import uuid as UUID
 
-#from ui.components.TodolistItem import ToDoListItem
-
 
 class MainScreen(Screen):
 
