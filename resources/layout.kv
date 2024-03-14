@@ -29,19 +29,20 @@
         id: task_label
         text: root.text
         color: 0, 0, 0, 1
-        padding: [5, 0, 0, 12]
+        padding: [5, 0, 0, 0]
+        pos_hint: {"center_y": .5}
         size_hint_y: None
-        height: dp(24)  # Adjust as needed for the label
-        width: dp(200)
+        height: dp(24)
+        width: dp(250)
 
 
 
     BoxLayout:
         orientation: 'horizontal'
         size_hint_y: None
-        height: dp(30)  # Adjust as needed for buttons
-        padding: [0, 0, 0, 2]  # Adjust padding as needed
-        spacing: 3  # Space between buttons
+        height: dp(30)
+        padding: [0, 0, 0, 2]
+        spacing: 3
         MDRaisedButton:
             id: edit_button
             text: 'Edit'
@@ -128,9 +129,8 @@
             size_hint_y: None
             width: dp(20)
 
-        MDFloatingActionButton:
-            text: '⟳'
-            text_color: 0, 0, 0, 1
+        MDIconButton:
+            icon: "refresh"
             size_hint: None, None
             height: root.height*0.075
             width: root.width*0.125
@@ -161,7 +161,7 @@
     name: 'login'
     BoxLayout:
         orientation: 'vertical'
-        spacing: 20  # Space between the label and the nested BoxLayout
+        spacing: 20
 
         Label:
             text: 'Login'
@@ -169,18 +169,12 @@
             height: dp(50)
             font_size: '20sp'
 
-        Widget:
-            # This widget acts as a flexible spacer
-            size_hint_y: None
-            height: dp(20)  # Adjust this value to manage the space above the login form
-
-        # Inner BoxLayout for the login widgets
         BoxLayout:
             orientation: 'vertical'
-            size_hint_y: None  # Allow the BoxLayout to grow based on its content
-            height: self.minimum_height  # Calculate height based on the content
-            pos_hint: {'center_y': .5}  # Center this layout in the vertical space
-            padding: [20, 20, 20, 20]  # Padding around the edges of the BoxLayout
+            size_hint_y: None
+            height: self.minimum_height
+            pos_hint: {'center_y': .5}
+            padding: [20, 20, 20, 20]
             spacing: dp(10)
 
             TextInput:
@@ -220,16 +214,15 @@
                 padding_y: (10, 10)
 
         Widget:
-            # Another flexible spacer, can adjust height as needed
             size_hint_y: None
             height: dp(20)
 
 
         BoxLayout:
             orientation: 'vertical'
-            size_hint_y: None  # Allow the BoxLayout to grow based on its content
-            height: self.minimum_height  # Calculate height based on the content
-            pos_hint: {'center_y': .5}  # Center this layout in the vertical space
+            size_hint_y: None
+            height: self.minimum_height
+            pos_hint: {'center_y': .5}
             padding: [20, 20, 20, 20]
             spacing: dp(10)
 
@@ -237,16 +230,17 @@
                 text: 'Connect'
                 text_color: 0, 0, 0, 1
                 size_hint: None, None
+                padding_y: dp(20)
+                pos_hint: {"center_x": .5}
                 height: root.height*0.1
-                width: root.width*0.87
+                width: root.width*0.8
                 md_bg_color: 0.596, 0.984, 0.596, 1
                 on_release: root.update_config_yaml(username_input, password_input, broker_adress, port_input, topic_input)
 
 
         Widget:
-            # Another flexible spacer, can adjust height as needed
             size_hint_y: None
-            height: dp(20)  # Adjust this value to manage the space below the login form
+            height: dp(20)
 
         BoxLayout:
             size_hint_y: 0.0
