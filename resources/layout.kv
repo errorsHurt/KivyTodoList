@@ -1,7 +1,7 @@
 
 <ToDoListItem>:
     size_hint_y: None
-    height: 48
+    height: dp(40)
     orientation: 'horizontal'
     padding: [20, 0, 0, 5]
 
@@ -19,7 +19,7 @@
         id: checkbox
         active: root.state
         size_hint: None, None
-        size: 24, 24
+        size: dp(24), dp(24)
         active_color: 0.058, 0.615, 0.345, 1
         inactive_color: 0.501, 0.501, 0.501, 1
         pos_hint: {'center_y': 0.5, 'x': 0.5}
@@ -29,53 +29,43 @@
         id: task_label
         text: root.text
         color: 0, 0, 0, 1
-        padding: [5, 0, 0, 12]
+        padding: [5, 0, 0, 0]
+        pos_hint: {"center_y": .5}
         size_hint_y: None
-        height: 24  # Adjust as needed for the label
-        width: 200
-        text_size: self.width - 10,None  # Adjust text width with padding
-
-    Widget:
-        size_hint_y: None
-        width: 10
+        height: dp(24)
+        width: dp(300)
 
 
-    BoxLayout:
-        orientation: 'horizontal'
-        size_hint_y: None
-        height: 30  # Adjust as needed for buttons
-        padding: [0, 0, 0, 2]  # Adjust padding as needed
-        spacing: 3  # Space between buttons
-        MDRaisedButton:
-            id: edit_button
-            text: 'Edit'
-            text_color: 0, 0, 0, 1
-            md_bg_color: 0.596, 0.984, 0.596, 1
-            height: root.height*0.5
-            width: root.width*0.12
-            size_hint: None, None
-            opacity: 0
-            disabled: True
-            on_release: app.root.get_screen('main').edit_item(root)
+    MDRaisedButton:
+        id: edit_button
+        text: 'Edit'
+        text_color: 0, 0, 0, 1
+        md_bg_color: 0.596, 0.984, 0.596, 1
+        height: root.height*0.5
+        width: root.width*0.12
+        size_hint: None, None
+        opacity: 0
+        disabled: True
+        on_release: app.root.get_screen('main').edit_item(root)
 
-        MDRaisedButton:
-            id: delete_button
-            text: 'Delete'
-            text_color: 0, 0, 0, 1
-            md_bg_color: 0.596, 0.984, 0.596, 1
-            height: root.height*0.5
-            width: root.width*0.18
-            size_hint: None, None
-            opacity: 0
-            disabled: True
-            on_release: app.root.get_screen('main').delete_item(root.id)
+    MDRaisedButton:
+        id: delete_button
+        text: 'Delete'
+        text_color: 0, 0, 0, 1
+        md_bg_color: 0.596, 0.984, 0.596, 1
+        height: root.height*0.5
+        width: root.width*0.18
+        size_hint: None, None
+        opacity: 0
+        disabled: True
+        on_release: app.root.get_screen('main').delete_item(root.id)
 
 
 
 
 
 
-<MainToDoList>:
+<MainScreen>:
     name: 'main'
     orientation: 'vertical'
     canvas.before:
@@ -87,9 +77,9 @@
     BoxLayout:
         size_hint_y: None
         padding: [20, 20, 20, 20]
-        height: 50
-        spacing: 10
-        padding: 10
+        height: dp(50)
+        spacing: dp(10)
+        padding: dp(10)
 
 
     RecycleView:
@@ -130,11 +120,10 @@
 
         Widget:
             size_hint_y: None
-            width: 20
+            width: dp(20)
 
-        MDFloatingActionButton:
-            text: '⟳'
-            text_color: 0, 0, 0, 1
+        MDIconButton:
+            icon: "refresh"
             size_hint: None, None
             height: root.height*0.075
             width: root.width*0.125
@@ -146,7 +135,7 @@
 
         Widget:
             size_hint_y: None
-            width: 20
+            width: dp(20)
 
         MDRaisedButton:
             text: '+'
@@ -165,33 +154,21 @@
     name: 'login'
     BoxLayout:
         orientation: 'vertical'
-        spacing: 20  # Space between the label and the nested BoxLayout
+        spacing: 20
 
-        Label:
-            text: 'Login'
-            size_hint_y: None
-            height: 50
-            font_size: '20sp'
-
-        Widget:
-            # This widget acts as a flexible spacer
-            size_hint_y: None
-            height: 20  # Adjust this value to manage the space above the login form
-
-        # Inner BoxLayout for the login widgets
         BoxLayout:
             orientation: 'vertical'
-            size_hint_y: None  # Allow the BoxLayout to grow based on its content
-            height: self.minimum_height  # Calculate height based on the content
-            pos_hint: {'center_y': .5}  # Center this layout in the vertical space
-            padding: [20, 20, 20, 20]  # Padding around the edges of the BoxLayout
-            spacing: 10
+            size_hint_y: None
+            height: self.minimum_height
+            pos_hint: {'center_y': 1}
+            padding: [20, 20, 20, 20]
+            spacing: dp(10)
 
             TextInput:
                 id: username_input
                 hint_text: 'Username'
                 size_hint_y: None
-                height: 40
+                height: dp(40)
                 padding_y: (10, 10)
 
             TextInput:
@@ -199,50 +176,57 @@
                 hint_text: 'Password'
                 password: True
                 size_hint_y: None
-                height: 40
+                height: dp(40)
                 padding_y: (10, 10)
 
             TextInput:
-                id: server_input
-                hint_text: 'Server'
+                id: broker_adress
+                hint_text: 'Broker Adresse'
                 size_hint_y: None
-                height: 40
+                height: dp(40)
                 padding_y: (10, 10)
 
             TextInput:
-                id: server_input
-                hint_text: 'Server'
+                id: port_input
+                hint_text: 'Port'
                 size_hint_y: None
-                height: 40
+                height: dp(40)
                 padding_y: (10, 10)
 
-        Widget:
-            # Another flexible spacer, can adjust height as needed
-            size_hint_y: None
-            height: 20
+            TextInput:
+                id: topic_input
+                hint_text: 'Topic'
+                size_hint_y: None
+                height: dp(40)
+                padding_y: (10, 10)
+
+            Widget:
+                size_hint_y: None
+                height: dp(20)
 
 
         BoxLayout:
             orientation: 'vertical'
-            size_hint_y: None  # Allow the BoxLayout to grow based on its content
-            height: self.minimum_height  # Calculate height based on the content
-            pos_hint: {'center_y': .5}  # Center this layout in the vertical space
+            size_hint_y: None
+            height: self.minimum_height
+            pos_hint: {'center_y': .5}
             padding: [20, 20, 20, 20]
-            spacing: 10
+            spacing: dp(10)
 
             MDRaisedButton:
                 text: 'Connect'
                 text_color: 0, 0, 0, 1
                 size_hint: None, None
+                padding_y: dp(20)
+                pos_hint: {"center_x": .5}
                 height: root.height*0.1
-                width: root.width*0.87
+                width: root.width*0.8
                 md_bg_color: 0.596, 0.984, 0.596, 1
+                on_release: root.update_config_yaml(username_input, password_input, broker_adress, port_input, topic_input)
 
-
-        Widget:
-            # Another flexible spacer, can adjust height as needed
-            size_hint_y: None
-            height: 20  # Adjust this value to manage the space below the login form
+            Widget:
+                size_hint_y: None
+                height: dp(20)
 
         BoxLayout:
             size_hint_y: 0.0
