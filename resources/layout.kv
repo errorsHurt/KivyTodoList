@@ -33,39 +33,32 @@
         pos_hint: {"center_y": .5}
         size_hint_y: None
         height: dp(24)
-        width: dp(250)
+        width: dp(300)
 
 
+    MDRaisedButton:
+        id: edit_button
+        text: 'Edit'
+        text_color: 0, 0, 0, 1
+        md_bg_color: 0.596, 0.984, 0.596, 1
+        height: root.height*0.5
+        width: root.width*0.12
+        size_hint: None, None
+        opacity: 0
+        disabled: True
+        on_release: app.root.get_screen('main').edit_item(root)
 
-    BoxLayout:
-        orientation: 'horizontal'
-        size_hint_y: None
-        height: dp(30)
-        padding: [0, 0, 0, 2]
-        spacing: 3
-        MDRaisedButton:
-            id: edit_button
-            text: 'Edit'
-            text_color: 0, 0, 0, 1
-            md_bg_color: 0.596, 0.984, 0.596, 1
-            height: root.height*0.5
-            width: root.width*0.12
-            size_hint: None, None
-            opacity: 0
-            disabled: True
-            on_release: app.root.get_screen('main').edit_item(root)
-
-        MDRaisedButton:
-            id: delete_button
-            text: 'Delete'
-            text_color: 0, 0, 0, 1
-            md_bg_color: 0.596, 0.984, 0.596, 1
-            height: root.height*0.5
-            width: root.width*0.18
-            size_hint: None, None
-            opacity: 0
-            disabled: True
-            on_release: app.root.get_screen('main').delete_item(root.id)
+    MDRaisedButton:
+        id: delete_button
+        text: 'Delete'
+        text_color: 0, 0, 0, 1
+        md_bg_color: 0.596, 0.984, 0.596, 1
+        height: root.height*0.5
+        width: root.width*0.18
+        size_hint: None, None
+        opacity: 0
+        disabled: True
+        on_release: app.root.get_screen('main').delete_item(root.id)
 
 
 
@@ -162,12 +155,6 @@
     BoxLayout:
         orientation: 'vertical'
         spacing: 20
-
-        Label:
-            text: 'Login'
-            size_hint_y: None
-            height: dp(50)
-            font_size: '20sp'
 
         BoxLayout:
             orientation: 'vertical'
