@@ -20,8 +20,6 @@ class MainScreen(Screen):
 
     def add_item(self, uuid=""):
         if uuid == "":
-            # Das hier hatte gefehlt
-            # Hatten nen falschen Datentyp
             uuid = str(UUID.uuid4())
 
         text = 'New Task'
