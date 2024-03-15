@@ -38,7 +38,7 @@ class TaskStorageHandler:
 
 
         except Exception as e:
-            print("Es ist ein Fehler beim schreiben der Datei aufgetreten:", message, e)
+            print("Es ist ein Fehler beim hinzufügen des Tasks aufgetreten:", message, e)
 
     @staticmethod
     def _set_task_state(uuid, state: bool):
@@ -70,29 +70,35 @@ class TaskStorageHandler:
                 file.seek(0)
                 return json.load(file)
         except Exception as e:
-            print("Es ist ein Fehler aufgetreten:", e)
+            print("Es ist ein Fehler beim Lesen der Datei aufgetreten:", e)
 
     @staticmethod
     def _write_data(data):
-        with open(tasks_data_path, "w") as file:
-            json.dump(data, file, indent=4)
+        try:
+            with open(tasks_data_path, "w") as file:
+                json.dump(data, file, indent=4)
+        except Exception as e:
+            print("Es ist ein Fehler beim Schreiben der Datei aufgetreten:", e)
 
     @staticmethod
     def _delete_task(task_uuid):
-        with open(tasks_data_path, "r") as read_file:
-            data = json.load(read_file)
+        try:
+            with open(tasks_data_path, "r") as read_file:
+                data = json.load(read_file)
 
-            tasks = data.get("tasks", [])  # Holen der Liste von Aufgaben aus den Daten
+                tasks = data.get("tasks", [])  # Holen der Liste von Aufgaben aus den Daten
 
-            for index, task in enumerate(tasks):
+                for index, task in enumerate(tasks):
 
-                if task.get('uuid') == task_uuid:
-                    del tasks[index]
-                    data["tasks"] = tasks  # Aktualisieren der Aufgabenliste in den Daten
-                    with open(tasks_data_path, "w") as write_file:
-                        json.dump(data, write_file, indent=4)
-                        write_file.close()
-            read_file.close()
+                    if task.get('uuid') == task_uuid:
+                        del tasks[index]
+                        data["tasks"] = tasks  # Aktualisieren der Aufgabenliste in den Daten
+                        with open(tasks_data_path, "w") as write_file:
+                            json.dump(data, write_file, indent=4)
+                            write_file.close()
+                read_file.close()
+        except Exception as e:
+            print("Es ist ein Fehler beim Löschen des Tasks aufgetreten:", e)
 
     @staticmethod
     def _set_task_text(task_uuid, text):
@@ -107,4 +113,4 @@ class TaskStorageHandler:
                 with open(tasks_data_path, "w") as write_file:
                     json.dump(data, write_file, indent=4)
         except Exception as e:
-            print("Fehler beim Bearbeiten der Aufgabe:", e)
+            print("Fehler beim Bearbeiten der Task Message:", e)
