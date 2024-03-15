@@ -4,7 +4,7 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton
 import re
 import sys
-class LoginScreen(Screen):
+class SettingScreen(Screen):
 
     def __init__(self, mqtt_client,**kw):
         super().__init__(**kw)

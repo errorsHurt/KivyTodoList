@@ -6,7 +6,7 @@ from logic.mqtt.MqttHandler import MqttHandler
 from logic.mqtt.MqttConfig import MqttConfig
 # Screens importieren
 from ui.screens.MainScreen import MainScreen
-from ui.screens.SettingScreen import LoginScreen
+from ui.screens.SettingScreen import SettingScreen
 
 # Die zwei Statements müssen drin bleiben, das sonst
 from ui.components.TodolistItem import ToDoListItem
@@ -26,15 +26,15 @@ class ToDoApp(MDApp):
         sm = ScreenManager()
 
         #Generiere UUID und aktualisiere sie
-        todoscreen = MainScreen(name='main', mqtt_client=self.mqtt_client)
-        loginscreen = LoginScreen(name='login', mqtt_client=self.mqtt_client)
+        main_screen = MainScreen(name='main', mqtt_client=self.mqtt_client)
+        setting_screen = SettingScreen(name='login', mqtt_client=self.mqtt_client)
 
-        sm.add_widget(todoscreen)
-        sm.add_widget(loginscreen)
+        sm.add_widget(main_screen)
+        sm.add_widget(setting_screen)
 
         data = TaskStorageHandler._read_data()
         tasks = data["tasks"]
-        todoscreen.load_tasks_in_local_list(tasks)
+        main_screen.load_tasks_in_local_list(tasks)
         return sm
 
 
