@@ -17,25 +17,20 @@ class TaskStorageHandler:
     @staticmethod
     def _add_task(client_id, message):
         try:
-            task_uuid = uuid.uuid4()
-            client_id = client_id
-            message = message
-            state = False
 
             with open(tasks_data_path, "r") as file:
                 data = json.load(file)
 
                 task: dict = {
-                    "uuid": str(task_uuid),
+                    "uuid": str(uuid.uuid4()),
                     "client-id": str(client_id),
                     "message": message,
-                    "state": state
+                    "state": False
                 }
 
                 data["tasks"].append(task)
 
                 TaskStorageHandler._write_data(data)
-
 
         except Exception as e:
             print("Es ist ein Fehler beim hinzufügen des Tasks aufgetreten:", message, e)
@@ -58,7 +53,6 @@ class TaskStorageHandler:
                 read_file.close()
 
                 mqtt_client.publish_message(data, True)
-
 
         except Exception as e:
             print(f"Status des Task konnte nicht aktuallisert werden:", uuid, state, e)
