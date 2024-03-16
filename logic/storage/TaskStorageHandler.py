@@ -13,9 +13,18 @@ mqtt_client = MqttHandler(mqtt_config)
 
 
 class TaskStorageHandler:
+    """
+                Klasse zur Verwaltung von Aufgaben in einer JSON-Datei.
+    """
 
     @staticmethod
     def _add_task(client_id, message):
+        """
+                    Fügt eine neue Aufgabe zur Aufgabenliste hinzu.
+
+                    client_id: Die ID des Clients, der die Aufgabe erstellt.
+                    message: Die Nachricht oder Beschreibung der Aufgabe.
+        """
         try:
 
             with open(tasks_data_path, "r") as file:
@@ -37,6 +46,13 @@ class TaskStorageHandler:
 
     @staticmethod
     def _set_task_state(uuid, state: bool):
+        """
+                    Aktualisiert den Status einer Aufgabe.
+
+                    uuid: Die eindeutige ID der Aufgabe, deren Status aktualisiert werden soll.
+                    state: Der neue Status der Aufgabe (True oder False).
+                    Exception: Wirft eine Ausnahme, wenn der Status der Aufgabe nicht aktualisiert werden kann.
+        """
         try:
             with open(tasks_data_path, "r") as read_file:
                 data = json.load(read_file)
@@ -59,6 +75,11 @@ class TaskStorageHandler:
 
     @staticmethod
     def _read_data():
+        """
+                    Liest die Daten aus der JSON-Datei.
+
+                    return: Die geladenen Daten als Dictionary.
+        """
         try:
             with open(tasks_data_path, "r") as file:
                 file.seek(0)
@@ -68,6 +89,11 @@ class TaskStorageHandler:
 
     @staticmethod
     def _write_data(data):
+        """
+                    Schreibt Daten in die JSON-Datei.
+
+                    data: Die zu schreibenden Daten.
+        """
         try:
             with open(tasks_data_path, "w") as file:
                 json.dump(data, file, indent=4)
@@ -76,6 +102,11 @@ class TaskStorageHandler:
 
     @staticmethod
     def _delete_task(task_uuid):
+        """
+                    Löscht eine Aufgabe anhand ihrer UUID.
+
+                    task_uuid: Die UUID der zu löschenden Aufgabe.
+        """
         try:
             with open(tasks_data_path, "r") as read_file:
                 data = json.load(read_file)
@@ -96,6 +127,12 @@ class TaskStorageHandler:
 
     @staticmethod
     def _set_task_text(task_uuid, text):
+        """
+                    Aktualisiert den Text einer Aufgabe.
+
+                    task_uuid: Die UUID der zu aktualisierenden Aufgabe.
+                    text: Der neue Text der Aufgabe
+        """
         try:
             with open(tasks_data_path, "r") as read_file:
                 data = json.load(read_file)

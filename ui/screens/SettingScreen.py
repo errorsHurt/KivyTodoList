@@ -12,6 +12,18 @@ class SettingScreen(Screen):
 
 
     def is_valid(self, username, password, broker_adress, port, topic):
+        """
+                                Checkt ob MQTT Parameter korrekt sind bevor die config editiert wird.
+
+                                Args:
+                                    username: Eingabe des Benutzernamens.
+                                    password: Eingabe des Passworts.
+                                    broker_address: Die Broker-Adresse des MQTT.
+                                    port: Der Port über den eine Verbindung hergestellt werden soll.
+                                    topic: Das Topic zu dem subscribed werden soll.
+        """
+        # Validierung implementieren
+        # Checke ob es leer ist
         if not (username and password and broker_adress and port and topic):
             return False
         # broker port
@@ -25,6 +37,16 @@ class SettingScreen(Screen):
         return True
 
     def update_config_yaml(self, username_input, password_input, broker_adress_input, port_input, topic_input):
+        """
+                        Setzt neue Parameter zur Verbindung mit dem MQTT-Broker.
+
+                        Args:
+                            username_input: Eingabe des Benutzernamens.
+                            password_input: Eingabe des Passworts.
+                            broker_adress_input: Die Broker-Adresse des MQTT.
+                            port_input: Der Port über den eine Verbindung hergestellt werden soll.
+                            topic_input: Das Topic zu dem subscribed werden soll.
+        """
         username_input = username_input.text
         password_input = password_input.text
         broker_adress_input = broker_adress_input.text
@@ -56,6 +78,10 @@ class SettingScreen(Screen):
             print("Es stehen keine Configs bereit")
 
     def show_shutdown_dialog(self):
+        """
+                    Zeigt eine Popup mit der Aufforderung die App neu zu starten damit die neue Verbindung hergestellt wird.
+
+        """
         # Ensure only one instance of the dialog is created
         if not hasattr(self, 'shutdown_dialog'):
             self.shutdown_dialog = MDDialog(

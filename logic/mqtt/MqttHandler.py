@@ -12,7 +12,7 @@ class MqttHandler:
 
         self.__retainedMessages = []
 
-        self.client = paho.Client(client_id=config.client_id, userdata=None, protocol=paho.MQTTv5)
+        self.client = paho.Client(paho.CallbackAPIVersion.VERSION1, client_id=config.client_id, userdata=None, protocol=paho.MQTTv5)
         self.client.on_connect = self.on_connect
 
         self.client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
