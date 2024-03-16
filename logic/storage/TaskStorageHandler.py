@@ -109,7 +109,7 @@ class TaskStorageHandler:
             with open(tasks_data_path, "r") as read_file:
                 data = json.load(read_file)
 
-                tasks = data.get("tasks", [])
+                tasks = data["tasks"]
 
                 for index, task in enumerate(tasks):
 
