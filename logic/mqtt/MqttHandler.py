@@ -59,22 +59,20 @@ class MqttHandler:
         self.client.disconnect()
 
     def get_retained_messages(self):
-        # Verbinden Sie den Client, bevor Sie auf Nachrichten warten
+
         self.client.connect(self.config.broker_adress, self.config.port)
         self.client.subscribe(self.config.topic, self.config.qos)
         time.sleep(0.5)
         self.client.loop_start()
 
-        # Warten Sie einen Moment, um die retained messages zu empfangen
         time.sleep(0.5)
-        # Stoppen Sie die Schleife, um weitere Nachrichten zu vermeiden
+
         self.client.loop_stop()
 
-        # Trennen Sie den Client, da keine weiteren Nachrichten empfangen werden
         self.client.disconnect()
 
         retained_messages = self.__retainedMessages.copy()
-        self.__retainedMessages.clear()  # Löschen der alten behaltenen Nachrichten
+        self.__retainedMessages.clear()
 
         return retained_messages
 

@@ -4,8 +4,6 @@ import uuid
 from logic.mqtt.MqttConfig import MqttConfig
 from logic.mqtt.MqttHandler import MqttHandler
 
-# tasks_data_path = "../tasks.json"
-# Das hier MUSS so angegeben werden
 tasks_data_path = "resources/tasks.json"
 
 mqtt_config = MqttConfig.load_from_resource()
@@ -111,13 +109,13 @@ class TaskStorageHandler:
             with open(tasks_data_path, "r") as read_file:
                 data = json.load(read_file)
 
-                tasks = data.get("tasks", [])  # Holen der Liste von Aufgaben aus den Daten
+                tasks = data.get("tasks", [])
 
                 for index, task in enumerate(tasks):
 
                     if task.get('uuid') == task_uuid:
                         del tasks[index]
-                        data["tasks"] = tasks  # Aktualisieren der Aufgabenliste in den Daten
+                        data["tasks"] = tasks
                         with open(tasks_data_path, "w") as write_file:
                             json.dump(data, write_file, indent=4)
                             write_file.close()

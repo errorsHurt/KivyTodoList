@@ -11,7 +11,7 @@ class ToDoListItem(BoxLayout):
     checkbox = ObjectProperty(None)
     id = StringProperty('')
     text = StringProperty('')
-    state = BooleanProperty(False)  # Keeps track of whether the task is done
+    state = BooleanProperty(False)
 
     def __init__(self, **kwargs):
         super(ToDoListItem, self).__init__(**kwargs)
@@ -30,7 +30,7 @@ class ToDoListItem(BoxLayout):
         self.ids.edit_button.disabled = True
         self.ids.delete_button.opacity = 0
         self.ids.delete_button.disabled = True
-        # Ensure checkbox state is set according to the data
+
         self.ids.checkbox.active = data.get('state', False)
         return super(ToDoListItem, self).refresh_view_attrs(rv, index, data)
 
@@ -42,9 +42,9 @@ class ToDoListItem(BoxLayout):
                             touch: Berührungs-Event.
         """
         if self.collide_point(*touch.pos):
-            # Cancel showing buttons on other items
+
             self.hide_buttons_other_items()
-            # Schedule showing the buttons after 1 second
+
             self.press_event = Clock.schedule_once(lambda dt: self.show_buttons(), 0.5)
         return super(ToDoListItem, self).on_touch_down(touch)
 
@@ -53,7 +53,7 @@ class ToDoListItem(BoxLayout):
                         Wird die Berührung vor einer Sekunde losgelassen, wird das Event abgebrochen.
         """
         if self.press_event:
-            # If touch is released before 1 second, cancel the scheduled event
+
             Clock.unschedule(self.press_event)
             self.press_event = None
         return super(ToDoListItem, self).on_touch_up(touch)
@@ -62,7 +62,6 @@ class ToDoListItem(BoxLayout):
         """
                         Macht den edit und delete button sichtbar für das Item.
         """
-        # Show the buttons for this item
         self.ids.edit_button.opacity = 1
         self.ids.edit_button.disabled = False
         self.ids.delete_button.opacity = 1
@@ -72,7 +71,6 @@ class ToDoListItem(BoxLayout):
         """
                         Versteckt den edit und delete button für das Item.
         """
-        # Hide the buttons
         self.ids.edit_button.opacity = 0
         self.ids.edit_button.disabled = True
         self.ids.delete_button.opacity = 0
@@ -112,5 +110,4 @@ class ToDoListItem(BoxLayout):
         """
                         Sorgt dafür das die checkbox den korekten Zustand anzeigt, wenn sich die Daten des Items ändern.
         """
-        # Explicitly reset the checkbox state based on the item's data
         self.ids.checkbox.active = self.state

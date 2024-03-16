@@ -86,21 +86,20 @@ class MainScreen(Screen):
         self.ids.global_edit_text.opacity = 1
         self.ids.global_edit_text.focus = True
 
-        # self.sync_items()
 
     def apply_global_edit(self):
         """
                         Wendet die in dem Textinput vorgenommenen Änderungen auf das ausgewählte item an.
         """
         new_text = self.ids.global_edit_text.text
-        # Update the item by ID
+
         for item in self.ids.rv.data:
             if item['id'] == self.selected_item_id:
                 item['text'] = new_text
                 break
 
         self.ids.rv.refresh_from_data()
-        # Clear and hide the global TextInput
+
         TaskStorageHandler._set_task_text(self.selected_item_id, text=self.ids.global_edit_text.text)
         time.sleep(1)
         data = TaskStorageHandler._read_data()

@@ -4,7 +4,7 @@ from kivy.uix.screenmanager import ScreenManager
 from logic.storage.TaskStorageHandler import TaskStorageHandler
 from logic.mqtt.MqttHandler import MqttHandler
 from logic.mqtt.MqttConfig import MqttConfig
-# Screens importieren
+
 from ui.screens.MainScreen import MainScreen
 from ui.screens.SettingScreen import SettingScreen
 
@@ -25,7 +25,6 @@ class ToDoApp(MDApp):
         self.icon = 'resources/app_icon.png'
         sm = ScreenManager()
 
-        #Generiere UUID und aktualisiere sie
         main_screen = MainScreen(name='main', mqtt_client=self.mqtt_client)
         setting_screen = SettingScreen(name='login', mqtt_client=self.mqtt_client)
 

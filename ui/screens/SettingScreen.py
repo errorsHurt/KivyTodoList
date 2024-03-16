@@ -22,14 +22,13 @@ class SettingScreen(Screen):
                                     port: Der Port über den eine Verbindung hergestellt werden soll.
                                     topic: Das Topic zu dem subscribed werden soll.
         """
-        # Validierung implementieren
-        # Checke ob es leer ist
+
         if not (username and password and broker_adress and port and topic):
             return False
-        # broker port
+
         if not str(port).isdigit():
             return False
-        # Checke topic
+
         if not re.search(r'[#/]', topic):
             print('ja')
             return False
@@ -82,7 +81,6 @@ class SettingScreen(Screen):
                     Zeigt eine Popup mit der Aufforderung die App neu zu starten damit die neue Verbindung hergestellt wird.
 
         """
-        # Ensure only one instance of the dialog is created
         if not hasattr(self, 'shutdown_dialog'):
             self.shutdown_dialog = MDDialog(
                 title="Neustart Benachrichtung",
