@@ -34,7 +34,7 @@ class SettingScreen(Screen):
 
         return True
 
-    def update_config_yaml(self, username_input, password_input, broker_adress_input, port_input, topic_input):
+    def update_config_json(self, username_input, password_input, broker_adress_input, port_input, topic_input):
         """
                         Setzt neue Parameter zur Verbindung mit dem MQTT-Broker.
 
