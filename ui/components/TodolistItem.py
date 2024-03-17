@@ -101,7 +101,6 @@ class ToDoListItem(BoxLayout):
                 item_uuid = item['id']
 
         if item_uuid:
-            print(item_uuid, str(checkbox.active))
             TaskStorageHandler._set_task_state(item_uuid, bool(checkbox.active))
         else:
             print("Ein Fehler ist aufgetreten. Der Checkbox Status konnte nicht aktualisiert werden.")
