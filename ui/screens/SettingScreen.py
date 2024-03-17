@@ -30,7 +30,6 @@ class SettingScreen(Screen):
             return False
 
         if not re.search(r'[#/]', topic):
-            print('ja')
             return False
 
         return True
@@ -51,7 +50,6 @@ class SettingScreen(Screen):
         broker_adress_input = broker_adress_input.text
         port_input = port_input.text
         topic_input = topic_input.text
-        print(self.is_valid(username_input, password_input, broker_adress_input, port_input, topic_input))
 
         if self.is_valid(username_input, password_input, broker_adress_input, port_input, topic_input):
 

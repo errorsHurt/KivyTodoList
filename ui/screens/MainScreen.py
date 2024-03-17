@@ -103,7 +103,6 @@ class MainScreen(Screen):
         TaskStorageHandler._set_task_text(self.selected_item_id, text=self.ids.global_edit_text.text)
         time.sleep(1)
         data = TaskStorageHandler._read_data()
-        print(data)
         self.mqtt_client.publish_message(data, True)
 
         self.ids.global_edit_text.text = ''
