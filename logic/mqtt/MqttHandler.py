@@ -13,31 +13,27 @@ class MqttHandler:
         self.__retainedMessages = []
 
         self.client = paho.Client(client_id=config.client_id, userdata=None, protocol=paho.MQTTv5)
-        self.client.on_connect = self.on_connect
+        self.client.on_connect = self.__on_connect
 
         self.client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
         self.client.username_pw_set(config.username, config.password)
 
-        self.client.on_subscribe = self.on_subscribe
-        self.client.on_message = self.on_message
-        self.client.on_publish = self.on_publish
+        self.client.on_subscribe = self.__on_subscribe
+        self.client.on_message = self.__on_message
+        self.client.on_publish = self.__on_publish
 
         self.client.subscribe(self.topic, qos=config.qos)
-        self.received_message = None  # Variable zum Speichern der empfangenen Nachricht
 
-    def on_connect(self, client, userdata, flags, rc, properties=None):
-        print("Connection received with code %s." % rc)
+    def __on_connect(self, client, userdata, flags, rc, properties=None):
         pass
 
-    def on_publish(self, client, userdata, mid, properties=None):
-        print("Published: " + str(mid))
+    def __on_publish(self, client, userdata, mid, properties=None):
         pass
 
-    def on_subscribe(self, client, userdata, mid, granted_qos, properties=None):
-        print("Subscribed: " + str(mid) + " [%s]" % granted_qos)
+    def __on_subscribe(self, client, userdata, mid, granted_qos, properties=None):
         pass
 
-    def on_message(self, client, userdata, msg):
+    def __on_message(self, client, userdata, msg):
         self.__retainedMessages.append(msg.payload.decode("utf-8"))
 
     def publish_message(self, message, retain=False, qos=1):
@@ -48,15 +44,7 @@ class MqttHandler:
         self.client.publish(self.topic, payload=str(message), qos=qos, retain=retain)
         self.client.disconnect()
 
-    def start_loop(self):
-        self.client.connect(self.config.broker_adress, self.config.port)
-        self.client.loop_start()
-
-    def stop_loop(self):
-        self.client.loop_stop()
-        self.client.disconnect()
-
-    def get_retained_messages(self):
+    def get_retained_message(self):
 
         self.client.connect(self.config.broker_adress, self.config.port)
         self.client.subscribe(self.config.topic, self.config.qos)
@@ -72,10 +60,9 @@ class MqttHandler:
         retained_messages = self.__retainedMessages.copy()
         self.__retainedMessages.clear()
 
-        return retained_messages
+        return retained_messages[0]
 
     def __delete_old_retained_messages(self):
         self.client.connect(self.config.broker_adress, self.config.port)
         time.sleep(0.5)
         self.client.publish(self.topic, payload=None, qos=0, retain=True)
-

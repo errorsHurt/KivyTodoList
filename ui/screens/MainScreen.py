@@ -43,10 +43,10 @@ class MainScreen(Screen):
         self.mqtt_client.publish_message(data, True)
 
     def sync_items(self):
-        data = self.mqtt_client.get_retained_messages()
+        data = self.mqtt_client.get_retained_message()
         if data[0]:
             try:
-                data = json.loads(data[0].replace("'", "\"").replace("True", "true").replace("False", "false"))
+                data = json.loads(data.replace("'", "\"").replace("True", "true").replace("False", "false"))
                 TaskStorageHandler._write_data(data)
                 self.load_tasks_in_local_list(data["tasks"])
 
