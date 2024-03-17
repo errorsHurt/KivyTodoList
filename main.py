@@ -10,7 +10,6 @@ from ui.screens.SettingScreen import SettingScreen
 
 # Die zwei Statements müssen drin bleiben, das sonst
 from ui.components.TodolistItem import ToDoListItem
-from ui.components.NavigationBar import NavigationBar
 
 
 class ToDoApp(MDApp):
