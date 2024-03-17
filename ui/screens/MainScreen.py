@@ -12,6 +12,12 @@ class MainScreen(Screen):
         self.mqtt_client = mqtt_client
 
     def load_tasks_in_local_list(self, tasks):
+        """
+                        Lädt Items in die local list view.
+
+                        Args:
+                            tasks: Eine Liste von Item dictionaries, um sie in der Liste darzustellen.
+        """
         data = []
         for task in tasks:
             item = {'id': str(task["uuid"]), 'text': task["message"], 'state': task["state"]}
@@ -19,6 +25,12 @@ class MainScreen(Screen):
         self.ids.rv.data = data
 
     def add_item(self, uuid=""):
+        """
+                        Fügt ein neues Item zur Liste hinzu. Generiert eine neue UUID falls noch keine mitgebeben wurde.
+
+                        Args:
+                            uuid: Ein optionaler UUID string für das neue Item. Generiert einen neuen wenn dieser leer ist.
+        """
         if uuid == "":
             uuid = str(UUID.uuid4())
 
@@ -31,10 +43,10 @@ class MainScreen(Screen):
         self.mqtt_client.publish_message(data, True)
 
     def sync_items(self):
-        data = self.mqtt_client.get_retained_messages()
+        data = self.mqtt_client.get_retained_message()
         if data[0]:
             try:
-                data = json.loads(data[0].replace("'", "\"").replace("True", "true").replace("False", "false"))
+                data = json.loads(data.replace("'", "\"").replace("True", "true").replace("False", "false"))
                 TaskStorageHandler._write_data(data)
                 self.load_tasks_in_local_list(data["tasks"])
 
@@ -44,6 +56,12 @@ class MainScreen(Screen):
             print("Fehler, das hat nicht funktioniert", data)
 
     def delete_item(self, task_uuid):
+        """
+                        Löscht ein Item aus der Liste.
+
+                        Args:
+                            task_uuid: Der UUID string des Item, das gelöscht werden soll.
+        """
 
         TaskStorageHandler._delete_task(task_uuid)
 
@@ -56,29 +74,35 @@ class MainScreen(Screen):
         self.mqtt_client.publish_message(data, True)
 
     def edit_item(self, item_widget):
-        # Trigger editing using the item's widget but reference by ID
-        self.selected_item_id = item_widget.id  # Store the selected item's ID
+        """
+                        Initiiert den Bearbeitungsprozess für ein Item.
+
+                        Args:
+                            item_widget: Die Widget Instanz des Items das bearbeitet werden soll.
+        """
+        self.selected_item_id = item_widget.id
         self.ids.global_edit_text.text = item_widget.text
         self.ids.global_edit_text.disabled = False
         self.ids.global_edit_text.opacity = 1
         self.ids.global_edit_text.focus = True
 
-        # self.sync_items()
 
     def apply_global_edit(self):
+        """
+                        Wendet die in dem Textinput vorgenommenen Änderungen auf das ausgewählte item an.
+        """
         new_text = self.ids.global_edit_text.text
-        # Update the item by ID
+
         for item in self.ids.rv.data:
             if item['id'] == self.selected_item_id:
                 item['text'] = new_text
                 break
 
         self.ids.rv.refresh_from_data()
-        # Clear and hide the global TextInput
+
         TaskStorageHandler._set_task_text(self.selected_item_id, text=self.ids.global_edit_text.text)
         time.sleep(1)
         data = TaskStorageHandler._read_data()
-        print(data)
         self.mqtt_client.publish_message(data, True)
 
         self.ids.global_edit_text.text = ''
